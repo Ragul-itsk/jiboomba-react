@@ -21,6 +21,7 @@ export default function Register() {
     <div>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
+      <input type="hidden" placeholder="portal slug"  value ="jiboomba" onChange={(e) => setFormData({ ...formData, portal_slug: e.target.value })} required />
         <input type="text" placeholder="Name" onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
         <input type="email" placeholder="Email" onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
         <input type="password" placeholder="Password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} required />
