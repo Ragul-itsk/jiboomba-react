@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendDepositRequest, getPaymenttDetail } from "../api/deposit";
 import { AuthContext } from "../context/AuthContext";
+import Layout from "./Layout";
 
 export default function SendDepositRequestForm() {
   const { token, depositMethods } = useContext(AuthContext);
@@ -50,13 +51,16 @@ export default function SendDepositRequestForm() {
   };
 
   return (
-    <div>
-      <h2>Send Deposit Request</h2>
-      <form onSubmit={handleSubmit}>
-        {/* Deposit Method Dropdown */}
-        <select onChange={handleDepositMethodChange} required>
-          <option value="">Select Payment Method</option>
-          {depositMethods.length > 0 ? (
+    <Layout>
+    <div className="flex flex-col items-center bg-white p-4 shadow-md rounded-lg">
+    <h2 className="text-xl font-bold">Deposit</h2>
+    <form class="max-w-lg w-full mx-auto" onSubmit={handleSubmit}>
+  <div class="mb-5">
+  <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select your country</label>
+  <select id="countries" onChange={handleDepositMethodChange} required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+    <option value="">Select Payment Method</option>
+    {depositMethods.length > 0 ? (
             depositMethods.map((method) => (
               <option key={method.id} value={method.id}>
                 {method.name}
@@ -64,11 +68,10 @@ export default function SendDepositRequestForm() {
             ))
           ) : (
             <option disabled>Loading...</option>
-          )}
-        </select>
-
-        {/* Show Payment Details */}
-        {paymentDetails.length > 0 && (
+          )}  
+  </select>
+   {/* Show Payment Details */}
+   {paymentDetails.length > 0 && (
           <div>
             <h3>Payment Details:</h3>
             <ul>
@@ -94,31 +97,21 @@ export default function SendDepositRequestForm() {
             </ul>
           </div>
         )}
-
-        {/* Hidden Input for Payment Detail ID */}
-        <input type="hidden" name="payment_detail_id" value={formData.payment_detail_id} />
-
-        <input
-          type="text"
-          placeholder="Amount"
-          onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-          required
-        />
-        <input
-          type="text"
-          placeholder="UTR"
-          onChange={(e) => setFormData({ ...formData, utr: e.target.value })}
-          required
-        />
-        <input
-          type="file"
-          onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
-          required
-        />
-
-        <button type="submit">Submit</button>
-        {error && <p>{error}</p>}
-      </form>
+  </div>
+  <div class="mb-5">
+    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+    <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+  </div>
+  <div class="flex items-start mb-5">
+    <div class="flex items-center h-5">
+      <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
     </div>
+    <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+  </div>
+  <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+</form>
+      
+    </div>
+    </Layout>
   );
 }

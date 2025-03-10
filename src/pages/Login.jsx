@@ -15,12 +15,14 @@ export default function Login() {
     try {
       const res = await login({ mobile, password });
       localStorage.setItem("token", res.token);
-      setToken(res.token);
+      console.log("Login Response", res.token);
+      // setToken(res.token);
       const userProfile = await getProfile(res.token);
+      console.log("User Profile", userProfile);
       setUser(userProfile.data);
       navigate("/dashboard");
     } catch (err) {
-      setError("Invalid credentials");
+      setError("Invalid1 credentials");
     }
   };
 
