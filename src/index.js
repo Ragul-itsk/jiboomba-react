@@ -7,6 +7,9 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import PlayerProfile from "./pages/PlayerProfile";
 import SendDepositRequestForm from "./pages/SendDepositRequest";
+import SendWithdrawRequestForm from "./pages/SendWithdrawRequest";
+import StoreBankForm from "./pages/StoreBank";
+import ListBank from "./pages/ListBank";
 import { AuthProvider } from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -21,6 +24,9 @@ root.render(
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<PlayerProfile />} />
           <Route path="/deposit-request" element={<SendDepositRequestForm />} />
+          <Route path="/store-bank" element={<StoreBankForm/>} />
+          <Route path="/list-bank" element={<ListBank/>} />
+          <Route path="withdraw-request" element={<SendWithdrawRequestForm/>} />
           
         </Routes>
       </BrowserRouter>

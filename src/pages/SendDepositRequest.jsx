@@ -46,7 +46,7 @@ export default function SendDepositRequestForm() {
       navigate("/dashboard");
     } catch (err) {
       setError(err?.message || "Deposit Request failed!");
-    }
+    }         
   };
 
   return (
