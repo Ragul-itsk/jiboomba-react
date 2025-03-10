@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { register } from "../api/auth";
 
 export default function Register() {
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", mobile: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(formData);
+      await register({ ...formData, portal_slug: "jiboomba" });
       navigate("/login");
     } catch (err) {
       setError("Registration failed!");
@@ -18,17 +18,51 @@ export default function Register() {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-      <input type="hidden" placeholder="portal slug"  value ="jiboomba" onChange={(e) => setFormData({ ...formData, portal_slug: e.target.value })} required />
-        <input type="text" placeholder="Name" onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
-        <input type="email" placeholder="Email" onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
-        <input type="text" placeholder="Mobile" onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} required />
-        <input type="password" placeholder="Password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} required />
-        <button type="submit">Register</button>
-        {error && <p>{error}</p>}
-      </form>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-center text-green-600 mb-6">Register</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            required
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <input
+            type="text"
+            placeholder="Mobile"
+            value={formData.mobile}
+            onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+            required
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            required
+            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          <button
+            type="submit"
+            className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 transition"
+          >
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
