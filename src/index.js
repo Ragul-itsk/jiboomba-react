@@ -10,6 +10,8 @@ import SendDepositRequestForm from "./pages/SendDepositRequest";
 import SendWithdrawRequestForm from "./pages/SendWithdrawRequest";
 import StoreBankForm from "./pages/StoreBank";
 import ListBank from "./pages/ListBank";
+import DepositHistory from "./pages/DepositHistory";
+import WithdrawHistory from "./pages/WithdrawHistory";
 import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -27,6 +29,8 @@ root.render(
           <Route path="/store-bank" element={<StoreBankForm/>} />
           <Route path="/list-bank" element={<ListBank/>} />
           <Route path="withdraw-request" element={<SendWithdrawRequestForm/>} />
+          <Route path="deposit-history" element={<DepositHistory/>} />
+          <Route path="withdraw-history" element={<WithdrawHistory/>} />
           
         </Routes>
       </BrowserRouter>

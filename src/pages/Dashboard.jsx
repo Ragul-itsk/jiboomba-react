@@ -24,6 +24,16 @@ export default function Dashboard() {
       <div className="fixed top-0 left-0 w-full bg-white shadow-md z-10">
         <header className="flex justify-between items-center bg-blue-600 p-4 text-white">
           <h1 className="text-xl font-bold">Jiboomba</h1>
+          <button
+  className="absolute top-2 right-12 bg-red-500 text-white px-4 py-2 rounded-lg"
+  onClick={() => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  }}
+>
+  Logout
+</button>
+
           <button onClick={() => setSidebarOpen(true)} className="text-2xl">
             <FiMenu />
           </button>
