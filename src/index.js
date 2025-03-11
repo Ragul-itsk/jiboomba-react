@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import PlayerProfile from "./pages/PlayerProfile";
+import DepositAmount from "./pages/DepositAmount";
 import SendDepositRequestForm from "./pages/SendDepositRequest";
 import SendWithdrawRequestForm from "./pages/SendWithdrawRequest";
 import StoreBankForm from "./pages/StoreBank";
@@ -31,6 +32,7 @@ root.render(
           <Route path="withdraw-request" element={<SendWithdrawRequestForm/>} />
           <Route path="deposit-history" element={<DepositHistory/>} />
           <Route path="withdraw-history" element={<WithdrawHistory/>} />
+          <Route path="deposit-amount" element={<DepositAmount/>} />
           
         </Routes>
       </BrowserRouter>

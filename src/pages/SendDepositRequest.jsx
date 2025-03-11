@@ -53,7 +53,7 @@ export default function SendDepositRequestForm() {
   return (
     <Layout>
     <div className="flex flex-col items-center bg-white p-4 shadow-md rounded-lg">
-    <h2 className="text-xl font-bold">Deposit</h2>
+    <h2 className="text-xl font-bold mb-5">Deposit</h2>
     <form class="max-w-lg w-full mx-auto" onSubmit={handleSubmit}>
   <div class="mb-5">
   <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Payment Method</label>
