@@ -1,21 +1,25 @@
 // Layout.jsx
-import {React, useContext, useState} from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { React, useContext, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate , Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
+import { PiHandWithdraw, PiHandDeposit, PiPassword } from "react-icons/pi";
+import { CiLogout } from "react-icons/ci";
+import { GrTransaction } from "react-icons/gr";
+
 
 const Layout = ({ children }) => {
   // Get the current route/path
   const location = useLocation();
 
- const { user } = useContext(AuthContext);
-//  console.log("User Data:", user);
+  const { user } = useContext(AuthContext);
+  //  console.log("User Data:", user);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const handleDepositClick = () => {
     // Navigate to the "/deposit-request" route
-    
+
     navigate("/deposit-request");
   };
   if (user === null) {
@@ -23,76 +27,165 @@ const Layout = ({ children }) => {
   }
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 relative">
-          {/* Top Navbar & Profile Info Fixed */}
-          <div className="fixed top-0 left-0 w-full bg-white shadow-md z-10">
-            <header className="flex justify-between items-center bg-blue-600 p-4 text-white">
-              <h1 className="text-xl font-bold">Jiboomba</h1>
-              <button onClick={() => setSidebarOpen(true)} className="text-2xl">
-                <FiMenu />
-              </button>
-            </header>
-          </div>
-    
-          {/* Sidebar */}
-          <div
-            className={`fixed inset-0 bg-black bg-opacity-50 z-50 transition-transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+      {/* Top Navbar & Profile Info Fixed */}
+      <div className="fixed top-0 left-0 w-full bg-white shadow-md z-10">
+        <header className="flex justify-between items-center bg-blue-600 p-4 text-white">
+          <h1 className="text-xl font-bold">Jiboomba</h1>
+          
+          <button onClick={() => setSidebarOpen(true)} className="text-2xl">
+            <FiMenu />
+          </button>
+        </header>
+      </div>
+
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 z-50 transition-transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="w-100 bg-white h-full shadow-lg p-4 flex flex-col">
+          <button
+            className="self-end text-gray-600 mb-4"
+            onClick={() => setSidebarOpen(false)}
           >
-            <div className="w-100 bg-white h-full shadow-lg p-4 flex flex-col">
+            ✖
+          </button>
+          {/* Profile model */}
+          <div class="w-full max-w-llg bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex justify-end px-4 pt-4">
               <button
-                className="self-end text-gray-600 mb-4"
-                onClick={() => setSidebarOpen(false)}
+                id="dropdownButton"
+                data-dropdown-toggle="dropdown"
+                class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
+                type="button"
               >
-                ✖
-              </button>
-              <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-        <div class="flex justify-end px-4 pt-4">
-            <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
                 <span class="sr-only">Open dropdown</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 16 3"
+                >
+                  <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
                 </svg>
-            </button>
-            {/* Profile */}
-            <div id="dropdown" class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+              </button>
+              {/* Profile */}
+              <div
+                id="dropdown"
+                class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
+              >
                 <ul class="py-2" aria-labelledby="dropdownButton">
-                <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>
-                </li>
-                <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export Data</a>
-                </li>
-                <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    >
+                      Edit
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    >
+                      Export Data
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    >
+                      Delete
+                    </a>
+                  </li>
                 </ul>
+              </div>
             </div>
-        </div>
-        <div class="flex flex-col items-center pb-10">
-            <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="assets/images/sample-profile.png" alt="Profile Image"/>
-            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{user.player.name}</h5>
-            <span class="text-sm text-gray-500 dark:text-gray-400">{ user.player.chips }</span>
-            <div class="flex mt-4 md:mt-6">
-            <button className="bg-green-500 text-white px-4 py-2 rounded mt-2">Deposit</button>
-            <button className="bg-red-500 text-white px-4 py-2 rounded mt-2 ms-2">Withdraw</button>
+            <div class="flex flex-col items-center pb-10">
+              <img
+                class="w-24 h-24 mb-3 rounded-full shadow-lg"
+                src="assets/images/sample-profile.png"
+                alt="Profile Image"
+              />
+              <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                {user.player.name}
+              </h5>
+              <span class="text-sm text-gray-500 dark:text-gray-400">
+                {user.player.chips}
+              </span>
+              <div class="flex mt-4 md:mt-6">
+                <button className="bg-green-500 text-white px-4 py-2 rounded mt-2">
+                  Deposit
+                </button>
+                <button className="bg-red-500 text-white px-4 py-2 rounded mt-2 ms-2">
+                  Withdraw
+                </button>
+              </div>
             </div>
+          </div>
+          <div class="w-full mt-5 text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            <button
+              type="button"
+              class="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
+            >
+              <GrTransaction size={32} className="p-1 mx-2" />
+             Transactions
+            </button>
+            <button
+              type="button"
+              class="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
+            >
+              <PiHandDeposit size={32} className="p-1 mx-2" />
+              Deposit History
+            </button>
+            <button
+              type="button"
+              class="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
+            >
+              <PiHandWithdraw size={32} className="p-1 mx-2" />
+              Withdraw History
+            </button>
+            <button
+              type="button"
+              class="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
+            >
+              <PiPassword size={32} className="p-1 mx-2" />
+              Change Password
+            </button>
+            
+            <button onClick={() => {
+              localStorage.removeItem("token");
+              window.location.href = "/login";
+            }}
+              type="button"
+              class="relative inline-flex items-center w-full px-4 py-4 text-red-600 text-m font-medium rounded-b-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
+            >
+              <CiLogout size={32} className="p-1 mx-2"/>
+              
+            Logout
+          </button>
+          </div>
         </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="pt-20 pb-16 p-4">
+        {" "}
+        {/* Padding for fixed header and bottom menu */}
+        {/* Children */}
+        {children}
+      </div>
+
+      {/* Bottom Navigation Fixed */}
+      <nav className="fixed bottom-0 left-0 w-full bg-white shadow-md p-3 flex justify-around z-10">
+        <button className="text-blue-600 font-semibold">Home</button>
+        <button className="text-gray-600">Live Games</button>
+        <button className="text-gray-600">Casino</button>
+      </nav>
     </div>
-            </div>
-          </div>
-    
-          {/* Main Content */}
-          <div className="pt-20 pb-16 p-4"> {/* Padding for fixed header and bottom menu */}
-            {/* Children */}
-            {children}
-          </div>
-    
-          {/* Bottom Navigation Fixed */}
-          <nav className="fixed bottom-0 left-0 w-full bg-white shadow-md p-3 flex justify-around z-10">
-            <button className="text-blue-600 font-semibold">Home</button>
-            <button className="text-gray-600">Live Games</button>
-            <button className="text-gray-600">Casino</button>
-          </nav>
-        </div>
   );
 };
 
