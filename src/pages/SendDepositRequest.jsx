@@ -2,19 +2,43 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendDepositRequest, getPaymenttDetail } from "../api/deposit";
 import { AuthContext } from "../context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 import Layout from "./Layout";
+import { FaRegCopy } from "react-icons/fa6";
 
 export default function SendDepositRequestForm() {
   const { token, depositMethods } = useContext(AuthContext);
   const [selectedMethod, setSelectedMethod] = useState("");
+  const [isOpen, setIsOpen] = useState(true);
   const [paymentDetails, setPaymentDetails] = useState([]);
-  const [formData, setFormData] = useState({ payment_detail_id: "", amount: "", utr: "", image: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    payment_detail_id: "",
+    amount: "",
+    utr: "",
+    image: null,
+  });
+
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    alert("Copied to clipboard!"); // Optional: Show alert or toast
+  };
+
+  // Set default selected method on page load
+  useEffect(() => {
+    if (depositMethods.length > 0 && !selectedMethod) {
+      setSelectedMethod(depositMethods[0].id);
+    }
+  }, [depositMethods, selectedMethod]);
 
   // Fetch payment details when a deposit method is selected
   useEffect(() => {
     if (selectedMethod) {
+      setIsLoading(true);
+      setPaymentDetails([]);
       getPaymenttDetail(token, selectedMethod)
         .then((res) => {
           if (res.status === "success") {
@@ -22,21 +46,23 @@ export default function SendDepositRequestForm() {
             if (res.paymentDetail.length > 0) {
               setFormData((prevData) => ({
                 ...prevData,
-                payment_detail_id: res.paymentDetail[0].id, // Set the first payment detail ID
+                payment_detail_id: res.paymentDetail[0].id,
               }));
             }
           } else {
-            setPaymentDetails([]);
+            setError("No payment details available.");
           }
         })
-        .catch(() => setPaymentDetails([]));
+        .catch(() => setError("Failed to fetch payment details."))
+        .finally(() => setIsLoading(false));
     }
   }, [selectedMethod, token]);
 
-  // Handle dropdown change
-  const handleDepositMethodChange = (e) => {
-    setSelectedMethod(e.target.value);
-    setPaymentDetails([]); // Clear old data
+  // Handle tab selection
+  const handleDepositMethodChange = (methodId) => {
+    setSelectedMethod(methodId);
+    setPaymentDetails([]);
+    setError("");
   };
 
   // Handle form submission
@@ -47,93 +73,234 @@ export default function SendDepositRequestForm() {
       navigate("/dashboard");
     } catch (err) {
       setError(err?.message || "Deposit Request failed!");
-    }         
+    }
   };
 
   return (
     <Layout>
-    <div className="flex flex-col items-center bg-white p-4 shadow-md rounded-lg">
-    <h2 className="text-xl font-bold mb-5">Deposit</h2>
-    <form class="max-w-lg w-full mx-auto" onSubmit={handleSubmit}>
-  <div class="mb-5">
-  <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Payment Method</label>
-  <select id="payment_method_id" onChange={handleDepositMethodChange} required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <div className="p-0 ">
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black opacity-50 rounded-t-lg"></div>
 
-    <option value="">Select Payment Method</option>
-    {depositMethods.length > 0 ? (
-            depositMethods.map((method) => (
-              <option key={method.id} value={method.id}>
-                {method.name}
-              </option>
-            ))
-          ) : (
-            <option disabled>Loading...</option>
-          )}  
-  </select>
-   {/* Show Payment Details */}
-   {paymentDetails.length > 0 && (
-          <div>
-            <h3>Payment Details:</h3>
-            <ul>
-              {paymentDetails.map((detail) => (
-                <li key={detail.id}>
-                  <strong>Payment Method:</strong> {detail.payment_method?.name} <br />
-                  {detail.payment_method?.name === "Bank" ? (
+        {/* Header */}
+        <div className="relative flex items-center justify-between p-4 text-white">
+          <button onClick={() => navigate(-1)}>&#8592; Back</button>
+          <h2 className="text-lg font-semibold">Deposit</h2>
+          <button onClick={() => navigate(-1)}>Close</button>
+        </div>
+
+        {/* Modal Animation */}
+        <AnimatePresence>
+          {isOpen && (
+            <div className="fixed bottom-10 inset-x-0 bg-cover bg-center rounded-t-lg">
+              <motion.div
+                className="absolute inset-0 opacity-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.5 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => setIsOpen(false)}
+              ></motion.div>
+
+              {/* Modal Content */}
+              <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 100, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                className="relative bg-white rounded-t-lg p-6 shadow-lg"
+              >
+                <h3 className="text-lg font-semibold text-center text-gray-700">
+                  Make Payment
+                </h3>
+
+                {/* Tabs */}
+                <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+                  <ul className="flex flex-wrap -mb-px">
+                    {depositMethods.length > 0 ? (
+                      depositMethods.map((method) => (
+                        <li key={method.id} className="me-2">
+                          <button
+                            onClick={() => handleDepositMethodChange(method.id)}
+                            className={`flex items-center gap-2 p-4 border-b-2 rounded-t-lg ${
+                              selectedMethod === method.id
+                                ? "text-blue-600 border-blue-600"
+                                : "border-transparent hover:text-gray-600 hover:border-gray-300"
+                            }`}
+                          >
+                            {/* Icon Placeholder (Can replace with actual icons) */}
+                            <span>💳</span> {method.name}
+                          </button>
+                        </li>
+                      ))
+                    ) : (
+                      <li>
+                        <button
+                          disabled
+                          className="p-4 text-gray-400 cursor-not-allowed"
+                        >
+                          No Methods Available
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+
+                {/* Tab Content */}
+                <motion.div className="mt-4 p-4 border rounded-lg bg-gray-50 h-[270px] overflow-auto">
+                  {selectedMethod ? (
                     <>
-                      <strong>Account Holder:</strong> {detail.account_holder_name} <br />
-                      <strong>Account Number:</strong> {detail.account_number} <br />
-                      <strong>Bank Name:</strong> {detail.bank_name} <br />
-                      <strong>IFSC Code:</strong> {detail.ifsc_code} <br />
+                      <h3 className="text-lg text-center font-semibold">
+                        {" "}
+                        {
+                          depositMethods.find((m) => m.id === selectedMethod)
+                            ?.name
+                        }
+                      </h3>
+
+                      {/* Loading State */}
+                      {isLoading ? (
+                        <p className="text-blue-500">Loading...</p>
+                      ) : error ? (
+                        <p className="text-red-500">{error}</p>
+                      ) : (
+                        <ul className="mt-1">
+                          {paymentDetails.length > 0 ? (
+                            paymentDetails.map((detail, index) => (
+                              <li
+                                key={index}
+                                className="text-gray-700 p-1 border-b"
+                              >
+                                {/* Ensure that values exist before rendering */}
+                                {detail.account_number && (
+                                  <div className="items-center justify-between p-0 rounded-lg">
+                                    <label className="font-small text-gray-700">
+                                      Account Number
+                                    </label>
+                                    <div className="flex justify-between items-center bg-gray-200 p-0 pr-0 gap-2 w-full">
+                                      <span className="text-gray-900 py-2 pl-2">
+                                        {detail.account_number}
+                                      </span>
+                                      <button
+                                        onClick={() =>
+                                          handleCopy(detail.account_number)
+                                        }
+                                        className="text-blue-500 hover:text-blue-700 p-2 bg-gray-300"
+                                      >
+                                        <FaRegCopy size={20} />
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                                {detail.ifsc_code && (
+                                  <div className="items-center justify-between p-0 rounded-lg">
+                                    <label className="font-small text-gray-700">
+                                      IFSC Code
+                                    </label>
+                                    <div className="flex justify-between items-center bg-gray-200 p-0 pr-0 gap-2 w-full">
+                                      <span className="text-gray-900 py-2 pl-2">
+                                        {detail.ifsc_code}
+                                      </span>
+                                      <button
+                                        onClick={() =>
+                                          handleCopy(detail.ifsc_code)
+                                        }
+                                        className="text-blue-500 hover:text-blue-700 p-2 bg-gray-300"
+                                      >
+                                        <FaRegCopy size={20} />
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                                {detail.bank_name && (
+                                  <div className="items-center justify-between p-0 rounded-lg">
+                                    <label className="font-small text-gray-700">
+                                      Bank Name
+                                    </label>
+                                    <div className="flex justify-between items-center bg-gray-200 p-0 pr-0 gap-2 w-full">
+                                      <span className="text-gray-900 py-2 pl-2">
+                                        {detail.bank_name}
+                                      </span>
+                                      <button
+                                        onClick={() =>
+                                          handleCopy(detail.bank_name)
+                                        }
+                                        className="text-blue-500 hover:text-blue-700 p-2 bg-gray-300"
+                                      >
+                                        <FaRegCopy size={20} />
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                                {detail.account_holder_name && (
+                                  <div className="items-center justify-between p-0 rounded-lg">
+                                    <label className="font-small text-gray-700">
+                                      Account Holder Name
+                                    </label>
+                                    <div className="flex justify-between items-center bg-gray-200 p-0 pr-0 gap-2 w-full">
+                                      <span className="text-gray-900 py-2 pl-2">
+                                        {detail.account_holder_name}
+                                      </span>
+                                      <button
+                                        onClick={() =>
+                                          handleCopy(detail.account_holder_name)
+                                        }
+                                        className="text-blue-500 hover:text-blue-700 p-2 bg-gray-300"
+                                      >
+                                        <FaRegCopy size={20} />
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                                {detail.upi_id && (
+                                  <p>
+                                    <strong>UPI ID:</strong> {detail.upi_id}
+                                  </p>
+                                )}
+                                {detail.qr_code && (
+                                  <div>
+                                    <strong>QR Code:</strong>
+                                    <img
+                                      src={detail.qr_code}
+                                      alt="QR Code"
+                                      className="mt-2 w-32 h-32"
+                                    />
+                                  </div>
+                                )}
+                              </li>
+                            ))
+                          ) : (
+                            <p className="text-gray-500">
+                              No additional details available.
+                            </p>
+                          )}
+                        </ul>
+                      )}
                     </>
                   ) : (
-                    <>
-                      <strong>UPI ID:</strong> {detail.upi_id || "N/A"} <br />
-                      <strong>QR Code:</strong> <br />
-                      {detail.qr_code && <img src={`https://staging.syscorp.in/storage/${detail.qr_code}`} alt="QR Code" width="100" />}
-                    </>
+                    <p className="text-gray-500">
+                      Please select a payment method.
+                    </p>
                   )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-  </div>
-  {/* <div class="mb-5">
-    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
-    <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-  </div>
-  <div class="flex items-start mb-5">
-    <div class="flex items-center h-5">
-      <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
-    </div>
-    <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
-  </div>
-  <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-</form> */}
-<input type="hidden" name="payment_detail_id" value={formData.payment_detail_id} />
- <div class="mb-5">
-    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>
-    <input type="text" id="amount"  onChange={(e) => setFormData({ ...formData, amount: e.target.value })} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-  </div>
-  <div class="mb-5">
-    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">UTR</label>
-    <input type="text" id="utr"  onChange={(e) => setFormData({ ...formData, utr: e.target.value })} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-  </div>
-  <div class="mb-5">
-    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</label>
-    <input type="file" id="image"  onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-  </div>
-    <div class="flex justify-center mt-4">
-  <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-    Submit
-  </button>
-</div>
+                </motion.div>
 
-
-{error && <p>{error}</p>}
-</form>
-      
-    </div>
+                {/* Confirm Button */}
+                <button
+                  className={`w-full py-2 rounded-lg mt-2 ${
+                    selectedMethod
+                      ? "bg-green-500 text-white hover:bg-green-600"
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  }`}
+                  onClick={handleSubmit}
+                  disabled={!selectedMethod}
+                >
+                  Enter UTR
+                </button>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
     </Layout>
   );
 }

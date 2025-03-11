@@ -7,11 +7,31 @@ export default function DepositPage() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const [amount, setAmount] = useState("");
+  const [error, setError] = useState("");
   const suggestedAmounts = [50, 100, 200, 500];
 
+  const validateAndSubmit = () => {
+    if (!amount) {
+      setError("Amount is required");
+      return;
+    }
+    if (amount < 100) {
+      setError("Minimum amount is 100");
+      return;
+    }
+    if (amount > 10000) {
+      setError("Maximum amount is 10,000");
+      return;
+    }
+
+    setError(""); // Clear errors
+    navigate(`/deposit-request?amount=${amount}`); // Navigate with amount
+  };
+
+  
   return (
     <Layout>
-      <div className=" p-0">
+      <div className="p-0">
       <div className="absolute inset-0 bg-black opacity-50 rounded-t-lg"></div>
 
         <div className="relative ">
@@ -51,10 +71,14 @@ export default function DepositPage() {
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 mb-4"
+                  min="100"
+                  max="10000"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 mb-2"
                   placeholder="Enter amount"
                 />
-                <div className="flex justify-around">
+                {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+
+                <div className="flex justify-around mb-4">
                   {suggestedAmounts.map((amt) => (
                     <button
                       key={amt}
@@ -67,9 +91,9 @@ export default function DepositPage() {
                 </div>
                 <button
                   className="w-full bg-green-500 text-white py-2 rounded-lg mt-2 hover:bg-green-600"
-                  onClick={() => setIsOpen(false)}
+                 onClick={validateAndSubmit}
                 >
-                  Submit
+                  Confirm
                 </button>
               </motion.div>
             </div>

@@ -180,7 +180,7 @@ const Layout = ({ children }) => {
       </div>
 
       {/* Bottom Navigation Fixed */}
-      <nav className="fixed bottom-0 left-0 w-full bg-white shadow-md p-3 flex justify-around z-10">
+      <nav className="fixed bottom-0 left-0 w-full bg-white shadow-md p-3 flex justify-around z-10 border-t-4 border-indigo-500">
         <button className="text-blue-600 font-semibold">Home</button>
         <button className="text-gray-600">Live Games</button>
         <button className="text-gray-600">Casino</button>
