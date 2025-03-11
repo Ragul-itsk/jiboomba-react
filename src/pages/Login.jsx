@@ -1,26 +1,37 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, getProfile } from "../api/auth";
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext
+import { AuthContext } from "../context/AuthContext"; 
 
 export default function Login() {
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setUser, setToken } = useContext(AuthContext); // Get setUser & setToken from context
+  const { setUser, updateToken } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); 
     try {
       const res = await login({ mobile, password });
+  
+      if (!res || !res.token) {
+        throw new Error("Invalid response from server");
+      }
+  
       localStorage.setItem("token", res.token);
-      setToken(res.token);
+      updateToken(res.token); 
+  
       const userProfile = await getProfile(res.token);
+      if (!userProfile || !userProfile.data) {
+        throw new Error("Failed to fetch user profile");
+      }
+  
       setUser(userProfile.data);
       navigate("/dashboard");
-    } catch (err) {
-      setError("Invalid credentials");
+    } catch (err) { 
+      setError("Invalid credentials"); 
     }
   };
 

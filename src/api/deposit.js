@@ -43,6 +43,18 @@
         return { status: "error", paymentDetail: [] };
       }
     };
+
+    export const depositHistory = async (token) => {
+      try {
+          const response = await axios.get(`${API_URL}/player/deposit-history`, {
+          headers: { Authorization: `Bearer ${token}` },
+          });
+          return response.data;
+      } catch (error) {
+          console.error("Error fetching payment methods:", error);
+          return [];
+      }
+      };
     
 
 

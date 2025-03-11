@@ -26,10 +26,18 @@ export const login = async (data) => {
 
 
 export const getProfile = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/player/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    
+    // Print the response to the console
+    // console.log("API Response:", response);
 
-  return axios.get(`${API_URL}/player/profile`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  
+    // Return the response if needed
+    return response;
+  } catch (error) {
+    // Handle any errors that might occur
+    console.error("Error fetching profile:", error);
+  }
 };
