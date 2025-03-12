@@ -25,7 +25,7 @@ export default function DepositPage() {
     }
 
     setError(""); // Clear errors
-    navigate(`/deposit-request?amount=${amount}`); // Navigate with amount
+    navigate(`/deposit-method?amount=${amount}`); // Navigate with amount
   };
 
   
