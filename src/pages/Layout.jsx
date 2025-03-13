@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 relative">
       {/* Top Navbar & Profile Info Fixed */}
-      <div className="fixed top-0 left-0 w-full bg-white shadow-md z-10">
+      <div className="fixed top-0 left-0 w-full bg-white shadow-md z-30">
         <header className="flex justify-between items-center bg-blue-600 p-4 text-white">
           {/* <h1 className="text-xl font-bold">Jiboomba</h1> */}
           <h1 className="text-xl font-bold cursor-pointer"onClick={() => navigate("/dashboard")}>Jiboomba</h1>
@@ -45,7 +45,7 @@ const Layout = ({ children }) => {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="w-100 bg-white h-full shadow-lg p-4 flex flex-col">
+        <div className="w-100 bg-white h-full shadow-lg p-4 flex flex-col overflow-y-scroll">
           <button
             className="self-end text-gray-600 mb-4"
             onClick={() => setSidebarOpen(false)}
@@ -75,7 +75,7 @@ const Layout = ({ children }) => {
               {/* Profile */}
               <div
                 id="dropdown"
-                class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
+                class="hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
               >
                 <ul class="py-2" aria-labelledby="dropdownButton">
                   <li>
