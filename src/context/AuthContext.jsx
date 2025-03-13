@@ -3,25 +3,21 @@ import { getProfile } from "../api/auth";
 import { getDepositMethod } from "../api/deposit";
 
 
+
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [depositMethods, setDepositMethods] = useState([]);
+  
 
 
   useEffect(() => {
     if (token) {
       getProfile(token)
-        .then((res) => {
-          setUser(res.data);
-          localStorage.setItem("user", JSON.stringify(res.data));
-        })
-        .catch(() => {
-          setUser(null);
-          localStorage.removeItem("user");
-        });
+        .then((res) => setUser(res.data))
+        .catch(() => setUser(null));
 
       getDepositMethod(token)
         .then((res) => {
@@ -35,23 +31,15 @@ export function AuthProvider({ children }) {
     }
   }, [token]);
 
-  useEffect(() => {
-    // Retrieve user data from localStorage if available
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
+  // Persist token when changed
   const updateToken = (newToken) => {
     setToken(newToken);
     localStorage.setItem("token", newToken);
   };
 
 
-
   return (
-    <AuthContext.Provider value={{ user, token, updateToken, depositMethods }}>
+    <AuthContext.Provider value={{ user, setUser, token, updateToken, depositMethods  }}>
       {children}
     </AuthContext.Provider>
   );
