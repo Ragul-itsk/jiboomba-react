@@ -14,6 +14,7 @@ import StoreBankForm from "./pages/StoreBank";
 import ListBank from "./pages/ListBank";
 import DepositHistory from "./pages/DepositHistory";
 import WithdrawHistory from "./pages/WithdrawHistory";
+import Providers from "./pages/Providers";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
@@ -44,7 +45,8 @@ root.render(
           <Route path="/withdraw-history" element={<WithdrawHistory/>} />
           <Route path="/deposit-amount" element={<DepositAmount/>} />
           </Route>
-          
+          <Route path="/providers" element={<Providers/>} />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
