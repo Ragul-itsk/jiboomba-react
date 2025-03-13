@@ -30,7 +30,8 @@ const Layout = ({ children }) => {
       {/* Top Navbar & Profile Info Fixed */}
       <div className="fixed top-0 left-0 w-full bg-white shadow-md z-10">
         <header className="flex justify-between items-center bg-blue-600 p-4 text-white">
-          <h1 className="text-xl font-bold">Jiboomba</h1>
+          {/* <h1 className="text-xl font-bold">Jiboomba</h1> */}
+          <h1 className="text-xl font-bold cursor-pointer"onClick={() => navigate("/dashboard")}>Jiboomba</h1>
           
           <button onClick={() => setSidebarOpen(true)} className="text-2xl">
             <FiMenu />
@@ -114,15 +115,20 @@ const Layout = ({ children }) => {
                 {user.player.name}
               </h5>
               <span class="text-sm text-gray-500 dark:text-gray-400">
-                {user.player.chips}
+                {/* {user.player.chips} */}
+                <p className="text-gray-600">Chips: {user.player.chips}</p>
               </span>
               <div class="flex mt-4 md:mt-6">
+                <Link to="/deposit-request">
                 <button className="bg-green-500 text-white px-4 py-2 rounded mt-2">
                   Deposit
                 </button>
+                </Link>
+                <Link to="/withdraw-request">
                 <button className="bg-red-500 text-white px-4 py-2 rounded mt-2 ms-2">
                   Withdraw
                 </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -134,6 +140,7 @@ const Layout = ({ children }) => {
               <GrTransaction size={32} className="p-1 mx-2" />
              Transactions
             </button>
+            <Link to="/deposit-history">
             <button
               type="button"
               class="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
@@ -141,6 +148,8 @@ const Layout = ({ children }) => {
               <PiHandDeposit size={32} className="p-1 mx-2" />
               Deposit History
             </button>
+            </Link>
+            <Link to="/withdraw-history">
             <button
               type="button"
               class="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
@@ -148,6 +157,7 @@ const Layout = ({ children }) => {
               <PiHandWithdraw size={32} className="p-1 mx-2" />
               Withdraw History
             </button>
+            </Link>
             <button
               type="button"
               class="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
@@ -181,7 +191,7 @@ const Layout = ({ children }) => {
 
       {/* Bottom Navigation Fixed */}
       <nav className="fixed bottom-0 left-0 w-full bg-white shadow-md p-3 flex justify-around z-10 border-t-4 border-indigo-500">
-        <button className="text-blue-600 font-semibold">Home</button>
+        <button className="text-blue-600 font-semibold" onClick={() => navigate("/dashboard")}>Home</button>
         <button className="text-gray-600">Live Games</button>
         <button className="text-gray-600">Casino</button>
       </nav>

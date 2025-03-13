@@ -16,7 +16,7 @@ export default function Dashboard() {
     return <p className="text-center text-gray-500 mt-10">Loading...</p>;
   }
 
-  console.log("User Data:", user);
+  // console.log("User Data:", user);
 
   return user ? (
     <Layout>
@@ -25,7 +25,7 @@ export default function Dashboard() {
       <div className="fixed top-0 left-0 w-full bg-white shadow-md mt-14">
         <div className="bg-white shadow-md p-4 text-center">
           <h2 className="text-xl font-bold">Welcome, {user.player.name}!</h2>
-          <p className="text-gray-600">Balance: {user.player.chips}</p>
+          <p className="text-gray-600">Chips: {user.player.chips}</p>
           <button className="bg-green-500 text-white px-4 py-1 rounded mt-2" onClick={() => navigate("/deposit-amount")}>Deposit</button>
         </div>
       </div>
