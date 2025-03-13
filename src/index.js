@@ -17,7 +17,9 @@ import WithdrawHistory from "./pages/WithdrawHistory";
 import Providers from "./pages/Providers";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 import "./index.css";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -25,9 +27,13 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login/>} />
+        </Route>
           <Route path="/register" element={<Register />} />
 
+          <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<PlayerProfile />} />
           <Route path="/deposit-request" element={<SendDepositRequestForm />} />
@@ -38,7 +44,9 @@ root.render(
           <Route path="/deposit-history" element={<DepositHistory/>} />
           <Route path="/withdraw-history" element={<WithdrawHistory/>} />
           <Route path="/deposit-amount" element={<DepositAmount/>} />
+          </Route>
           <Route path="/providers" element={<Providers/>} />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>

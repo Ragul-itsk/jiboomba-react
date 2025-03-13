@@ -41,3 +41,5 @@ export const getProfile = async (token) => {
     console.error("Error fetching profile:", error);
   }
 };
+
+
