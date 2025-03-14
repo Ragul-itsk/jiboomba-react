@@ -14,10 +14,10 @@ const bannerImages = [
 ];
 
 const games = [
-  { id: 1, name: "Poker", image: "/images/poker.jpg" },
-  { id: 2, name: "Blackjack", image: "/images/blackjack.jpg" },
-  { id: 3, name: "Roulette", image: "/images/roulette.jpg" },
-  { id: 4, name: "Slots", image: "/images/slots.jpg" },
+  { id: 1, name: "Teenpatti", image: "https://stage.gis-static.com/games/SuperSpadeGames/fefb56935028b6efed8dc7fca86004550905a00a.png" },
+  { id: 2, name: "Color Prediction", image: "https://stage.gis-static.com/games/TaDaGaming/7f3e848cd71549628d2b848dcc5fdee4.png" },
+  { id: 3, name: "Dragon Tiger", image: "https://stage.gis-static.com/games/Rich88/f7468c20b5194dd4856c7564eb7e9bd3.png" },
+  { id: 4, name: "Aviator", image: "https://stage.gis-static.com/games/3962be5e18b1e84fdd95613e87dfda1a/Spribe/841d0a6789c74dd4abab65133287af9b.png" },
 ];
 
 export default function Dashboard() {
@@ -75,7 +75,7 @@ export default function Dashboard() {
           </Slider>
 
           {/* Games Section */}
-          <h3 className="text-lg font-semibold mb-4">Popular Games</h3>
+          <h3 className="text-lg font-semibold mb-4">Popular Games <span className="float-right text-base font-normal p-1">All Games</span></h3>
           <div className="grid grid-cols-2 gap-4">
             {games.map((game) => (
               <div key={game.id} className="bg-white p-3 rounded-lg shadow-md">
