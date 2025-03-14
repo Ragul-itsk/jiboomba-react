@@ -29,9 +29,9 @@ const Layout = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("authToken"); // Retrieve token
+      const token = localStorage.getItem("token"); // Retrieve token
       await logout(token);
-      localStorage.removeItem("authToken"); // Remove token after logout
+      localStorage.removeItem("token"); // Remove token after logout
       window.location.href = "/login"; // Redirect to login page
     } catch (error) {
       console.error("Logout failed:", error);

@@ -10,7 +10,24 @@ export default function Games() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [selectedProvider, setSelectedProvider] = useState("");
+  const [providers, setProviders] = useState([]);
   const chunkSize = 20; // Load 20 games at a time
+
+
+  const fetchProviders = async () => {
+    try {
+      const response = await fetch("https://staging.syscorp.in/api/jiboomba/providers-list");
+      const data = await response.json();
+
+      if (data.status === "success") {
+        setProviders(data.providers);
+      }
+    } catch (error) {
+      console.error("Error fetching providers:", error);
+    }
+  };
+
 
   // Fetch Games (Pagination & Search)
   const fetchGames = async (query = "", pageNumber = 1) => {
@@ -32,6 +49,21 @@ export default function Games() {
       console.error("Error fetching games:", error);
     }
   };
+
+  useEffect(() => {
+    fetchProviders();
+    fetchGames();
+  }, []);
+
+  // Handle Provider Selection Change
+  const handleProviderChange = (event) => {
+    const provider = event.target.value;
+    setSelectedProvider(provider);
+    setPage(1);
+    fetchGames(search, provider, 1);
+  };
+
+
 
   useEffect(() => {
     if (token) {
@@ -61,7 +93,7 @@ export default function Games() {
 
     const timeoutId = setTimeout(() => {
       setPage(1);
-      fetchGames(search, 1);
+      fetchGames(search, selectedProvider, 1);
     }, 500); // Delay API request by 500ms
 
     return () => clearTimeout(timeoutId);
@@ -100,6 +132,20 @@ export default function Games() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+
+<select
+            className="block w-1/3 p-2 text-sm border border-gray-300 rounded-full"
+            value={selectedProvider}
+            onChange={handleProviderChange}
+          >
+            <option value="">All Providers</option>
+            {providers.map((provider) => (
+              <option key={provider.id} value={provider.provider}>
+                {provider.provider}
+              </option>
+            ))}
+          </select>
+          
         </div>
 
         {/* Games List - Infinite Scroll */}
@@ -137,3 +183,5 @@ export default function Games() {
     </Layout>
   );
 }
+
+
