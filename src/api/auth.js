@@ -42,4 +42,24 @@ export const getProfile = async (token) => {
   }
 };
 
+export const logout = async (token) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/logout`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "Logout failed";
+  }
+};
+
+
+
 

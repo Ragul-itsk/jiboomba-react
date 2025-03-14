@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext  } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Layout from "./Layout";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Games() {
+  const { token } = useContext(AuthContext);
   const [games, setGames] = useState([]); // Stores games from API
   const [displayedGames, setDisplayedGames] = useState([]); // Games to display
   const [search, setSearch] = useState("");
@@ -30,6 +32,13 @@ export default function Games() {
       console.error("Error fetching games:", error);
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      fetchGames();
+    }
+  }, [token]);
+
 
   // Fetch initial games
   useEffect(() => {
@@ -61,7 +70,12 @@ export default function Games() {
   // Launch Game (Open in iFrame)
   const launchGame = async (provider, name, uuid) => {
     try {
-      const response = await fetch(`https://staging.syscorp.in/api/jiboomba/player/${provider}/launch/${name}/${uuid}`);
+      const response = await fetch(`https://staging.syscorp.in/api/jiboomba/player/${provider}/launch/${name}/${uuid}`, {
+        method: "GET",
+        headers: {
+          "Accept": "application/json", 
+          "Authorization": `Bearer ${token}`,
+        },});
       const data = await response.json();
       console.log(data);
 
