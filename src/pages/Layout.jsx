@@ -7,6 +7,7 @@ import { FiMenu } from "react-icons/fi";
 import { PiHandWithdraw, PiHandDeposit, PiPassword } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
 import { GrTransaction } from "react-icons/gr";
+import { logout} from "../api/auth";
 
 
 const Layout = ({ children }) => {
@@ -25,6 +26,18 @@ const Layout = ({ children }) => {
   if (user === null) {
     return <p className="text-center text-gray-500 mt-10">Loading...</p>;
   }
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("authToken"); // Retrieve token
+      await logout(token);
+      localStorage.removeItem("authToken"); // Remove token after logout
+      window.location.href = "/login"; // Redirect to login page
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+  
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 relative">
       {/* Top Navbar & Profile Info Fixed */}
@@ -166,11 +179,9 @@ const Layout = ({ children }) => {
               Change Password
             </button>
             
-            <button onClick={() => {
-              localStorage.removeItem("token");
-              window.location.href = "/login";
-            }}
-              type="button"
+            <button 
+               onClick={handleLogout}
+              // type="button"
               class="relative inline-flex items-center w-full px-4 py-4 text-red-600 text-m font-medium rounded-b-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
             >
               <CiLogout size={32} className="p-1 mx-2"/>
