@@ -43,9 +43,11 @@ export const getProfile = async (token) => {
 };
 
 export const logout = async (token) => {
+
+  // console.log(' logouttoken',token)
   try {
     const response = await axios.post(
-      `${API_URL}/logout`,
+      `${API_URL}/player/logout`,
       {},
       {
         headers: {

@@ -20,6 +20,7 @@ import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import "./index.css";
+import Layout from "./pages/Layout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -27,11 +28,11 @@ root.render(
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
-          {/* <Route path="/login" element={<Login />} /> */}
-          <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login/>} />
-        </Route>
+        <Route element={<PublicRoute />}>
+                <Route path="/" element={<App />} />
+                <Route path="/login" element={<Login />} />
+            </Route>
+
           <Route path="/register" element={<Register />} />
 
           <Route element={<PrivateRoute />}>
@@ -45,7 +46,9 @@ root.render(
           <Route path="/deposit-history" element={<DepositHistory/>} />
           <Route path="/withdraw-history" element={<WithdrawHistory/>} />
           <Route path="/deposit-amount" element={<DepositAmount/>} />
+          <Route path="/logout" element={<Layout />} />
           </Route>
+          
           <Route path="/providers" element={<Providers/>} />
           <Route path="/games" element={<Games/>} />
 
