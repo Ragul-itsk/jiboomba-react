@@ -10,8 +10,8 @@ export default function Games() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [selectedProvider, setSelectedProvider] = useState("");
   const [providers, setProviders] = useState([]);
+  const [types, setTypes] = useState([]);
   const chunkSize = 20; // Load 20 games at a time
 
 
@@ -22,9 +22,10 @@ export default function Games() {
 
       if (data.status === "success") {
         setProviders(data.providers);
+        setTypes(data.types);
       }
     } catch (error) {
-      console.error("Error fetching providers:", error);
+      console.error("Error fetching providers and types:", error);
     }
   };
 
@@ -39,7 +40,7 @@ export default function Games() {
       const response = await fetch(url);
       const data = await response.json();
 
-      if (data.status === "success") {
+        if (data.status === "success") {
         const newGames = data.allGames || [];
         setGames(pageNumber === 1 ? newGames : [...games, ...newGames]);
         setDisplayedGames(pageNumber === 1 ? newGames.slice(0, chunkSize) : [...displayedGames, ...newGames.slice(0, chunkSize)]);
@@ -55,16 +56,7 @@ export default function Games() {
     fetchGames();
   }, []);
 
-  // Handle Provider Selection Change
-  const handleProviderChange = (event) => {
-    const provider = event.target.value;
-    setSelectedProvider(provider);
-    setPage(1);
-    fetchGames(search, provider, 1);
-  };
-
-
-
+  
   useEffect(() => {
     if (token) {
       fetchGames();
@@ -93,7 +85,7 @@ export default function Games() {
 
     const timeoutId = setTimeout(() => {
       setPage(1);
-      fetchGames(search, selectedProvider, 1);
+      fetchGames(search, 1);
     }, 500); // Delay API request by 500ms
 
     return () => clearTimeout(timeoutId);
@@ -115,7 +107,7 @@ export default function Games() {
         window.open(data.game.gameUrl, "_blank"); // Open in new tab
       }
     } catch (error) {
-      console.error("Error launching game:", error);
+       console.error("Error launching game:", error);
     }
   };
 
@@ -125,28 +117,39 @@ export default function Games() {
         
         {/* Search Bar */}
         <div className="fixed top-0 left-0 w-full bg-white shadow-md mt-14 p-4 z-20">
-          <input
-            type="search"
-            className="block w-full p-2 text-sm border border-gray-300 rounded-full"
-            placeholder="Search Games (Min 3 Letters)"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+  <div className="flex items-center gap-4">
+    <input
+      type="search"
+      className="block w-full p-2 text-sm border border-gray-300 rounded-full"
+      placeholder="Search Games (Min 3 Letters)"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
 
-<select
-            className="block w-1/3 p-2 text-sm border border-gray-300 rounded-full"
-            value={selectedProvider}
-            onChange={handleProviderChange}
-          >
-            <option value="">All Providers</option>
-            {providers.map((provider) => (
-              <option key={provider.id} value={provider.provider}>
-                {provider.provider}
-              </option>
-            ))}
-          </select>
-          
-        </div>
+    <select
+      className="block w-1/3 p-2 text-sm border border-gray-300 rounded-full"
+    >
+      <option >All Providers</option>
+      {providers.map((provider) => (
+        <option key={provider.id} value={provider.provider}>
+          {provider.provider}
+        </option>
+      ))}
+    </select>
+
+    <select
+      className="block w-1/3 p-2 text-sm border border-gray-300 rounded-full ml-auto"
+      
+    >
+      <option >All Type</option>
+      {types.map((type) => (
+        <option key={type.id} value={type.type}>
+          {type.type}
+        </option>
+      ))}
+    </select>
+  </div>
+</div>
 
         {/* Games List - Infinite Scroll */}
         <div className="pt-24 pb-10 p-2">

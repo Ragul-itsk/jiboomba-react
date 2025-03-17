@@ -22,11 +22,11 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const PublicRoute = () => {
-    const { user, token } = useContext(AuthContext);
+    const {token } = useContext(AuthContext);
     const location = useLocation();
 
     // If user is logged in, prevent access to public routes like "/" and "/login"
-    if (user && token) {
+    if (token) {
         return <Navigate to="/dashboard" state={{ from: location }} replace />;
     }
 
