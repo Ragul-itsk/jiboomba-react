@@ -64,4 +64,20 @@ export const logout = async (token) => {
 
 
 
+export const verifyToken = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/player/verify-token`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    
+
+    return response;
+  } catch (error) {
+
+    console.error("Error  verifying token:", error);
+  }
+};
+
+
+
 

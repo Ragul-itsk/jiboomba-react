@@ -9,10 +9,10 @@ function App() {
         </h1>
         <nav className="space-x-4">
         <Link to="/login" className="button">
-        <button class="py-3 px-8 bg-green-500 rounded shadow text-white">Login</button>
+        <button className="py-3 px-8 bg-green-500 rounded shadow text-white">Login</button>
         </Link>
         <Link to="/register" className="button">
-        <button class="py-3 px-8 bg-yellow-500 rounded shadow text-white">Register</button>
+        <button className="py-3 px-8 bg-yellow-500 rounded shadow text-white">Register</button>
         </Link>
         </nav>
       </div>
