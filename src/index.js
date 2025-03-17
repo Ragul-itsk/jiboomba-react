@@ -16,6 +16,8 @@ import DepositHistory from "./pages/DepositHistory";
 import WithdrawHistory from "./pages/WithdrawHistory";
 import Providers from "./pages/Providers";
 import Games from "./pages/Games";
+import TempGame from "./pages/TempGame";
+import GamePage from "./pages/GamePage";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
@@ -84,6 +86,8 @@ root.render(
 
         <Route path="/providers" element={<Providers />} />
         <Route path="/games" element={<Games />} />
+        <Route path="/temp-game" element={<TempGame />} />
+        <Route path="/games/:gameName" element={<GamePage />} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>
