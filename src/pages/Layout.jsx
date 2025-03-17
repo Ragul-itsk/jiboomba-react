@@ -132,7 +132,7 @@ const Layout = ({ children }) => {
                 <p className="text-gray-600">Chips: {user.player.chips}</p>
               </span>
               <div className="flex mt-4 md:mt-6">
-                <Link to="/deposit-request">
+                <Link to="/deposit-amount">
                 <button className="bg-green-500 text-white px-4 py-2 rounded mt-2">
                   Deposit
                 </button>

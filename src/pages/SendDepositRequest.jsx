@@ -174,14 +174,14 @@ export default function SendDepositRequestForm() {
                   <input
                     type="hidden"
                     name="payment_detail_id"
-                    value={detailId}
+                    value={detailId || ""}
                   />
 
                   <input
                     type="hidden"
                     placeholder="Amount"
                     name="amount"
-                    value={amount}
+                    value={amount || ""}
                   />
                   <input
                     type="number"

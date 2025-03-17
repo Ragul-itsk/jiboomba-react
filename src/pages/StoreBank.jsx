@@ -48,96 +48,7 @@ export default function StoreBankForm() {
   };
 
   return (
-//     <Layout>
-//     <div>
-//       <h2>Store Bank</h2>
-//       <form onSubmit={handleSubmit}>
-//         {/* Payment Method Dropdown */}
-//         <select
-//           value={formData.payment_method_id}
-//           onChange={(e) =>
-//             setFormData({ ...formData, payment_method_id: e.target.value })
-//           }
-//           required
-//         >
-//           <option value="">Select Payment Method</option>
-//           {paymentMethods.length > 0 ? (
-//             paymentMethods.map((method) => (
-//               <option key={method.id} value={method.id}>
-//                 {method.name}
-//               </option>
-//             ))
-//           ) : (
-//             <option disabled>No Payment Methods Available</option>
-//           )}
-//         </select>
 
-//         <input
-//   type="hidden"
-//   name="payment_method_id"
-//   value={formData.payment_method_id}
-// />
-
-//         {/* Show Bank Details if payment_detail_id is 1 */}
-//         {formData.payment_method_id === "1" && (
-//           <>
-//             <input
-//               type="text"
-//               placeholder="Account Number"
-//               value={formData.account_number}
-//               onChange={(e) =>
-//                 setFormData({ ...formData, account_number: e.target.value })
-//               }
-//               required
-//             />
-//             <input
-//               type="text"
-//               placeholder="IFSC Code"
-//               value={formData.ifsc_code}
-//               onChange={(e) =>
-//                 setFormData({ ...formData, ifsc_code: e.target.value })
-//               }
-//               required
-//             />
-//             <input
-//               type="text"
-//               placeholder="Bank Name"
-//               value={formData.bank_name}
-//               onChange={(e) =>
-//                 setFormData({ ...formData, bank_name: e.target.value })
-//               }
-//               required
-//             />
-//             <input
-//               type="text"
-//               placeholder="Account Holder Name"
-//               value={formData.account_holder_name}
-//               onChange={(e) =>
-//                 setFormData({ ...formData, account_holder_name: e.target.value })
-//               }
-//               required
-//             />
-//           </>
-//         )}
-
-//         {/* Show UPI ID if payment_detail_id is 2 */}
-//         {formData.payment_method_id === "2" && (
-//           <input
-//             type="text"
-//             placeholder="UPI ID"
-//             value={formData.upi_id}
-//             onChange={(e) =>
-//               setFormData({ ...formData, upi_id: e.target.value })
-//             }
-//             required
-//           />
-//         )}
-
-//         <button type="submit">Submit</button>
-//         {error && <p style={{ color: "red" }}>{error}</p>}
-//       </form>
-//     </div>
-//     </Layout>
 <Layout>
       <div className="flex justify-center items-start min-h-screen bg-gray-100  p-4 pt-10">
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
@@ -155,7 +66,7 @@ export default function StoreBankForm() {
                 required
                 className="w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300"
               >
-                <option value="">Select Payment Method</option>
+                <option>Select Payment Method</option>
                 {paymentMethods.length > 0 ? (
                   paymentMethods.map((method) => (
                     <option key={method.id} value={method.id}>

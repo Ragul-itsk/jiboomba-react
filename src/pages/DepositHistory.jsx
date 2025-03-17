@@ -103,10 +103,10 @@ export default function ListBank() {
                   Status
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  <div class="flex items-center">Amount</div>
+                  <div className="flex items-center">Amount</div>
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  <div class="flex items-center">UTR</div>
+                  <div className  ="flex items-center">UTR</div>
                 </th>
                 <th scope="col" className="px-6 py-3">
                   <div className="flex items-center">Image</div>
