@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation  } from "react-router-dom";
 import { login, getProfile } from "../api/auth";
 import { AuthContext } from "../context/AuthContext"; 
 
@@ -8,6 +8,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const message = location.state?.message;
   const { setUser, updateToken } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
@@ -36,8 +38,15 @@ export default function Login() {
   };
 
   return (
+    <>
+    
+    <div>
+      {/* Login Form */}
+    </div>
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+      {message && <p className="error text-red-600 text-center mb-4">{message}</p>}
+
         <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">Login</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -66,5 +75,6 @@ export default function Login() {
         </form>
       </div>
     </div>
+    </>
   );
 }

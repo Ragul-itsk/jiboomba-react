@@ -7,7 +7,7 @@ const PrivateRoute = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get current route location
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const checkAuth = async () => {
       console.log('Checking authentication...');
@@ -15,13 +15,12 @@ const PrivateRoute = () => {
 
       if (!token) {
         navigate("/login");
-        console.log("No token found. Redirecting...",);
+        console.log("No token found. Redirecting...");
+        return;
       }
-      if(token){
-        
+
       try {
         const response = await verifyToken(token);
-        console.log(response);
         if (response?.data?.type === "valid") {
           console.log("Token is valid.");
           setLoading(false);
@@ -35,8 +34,6 @@ const PrivateRoute = () => {
         localStorage.removeItem("token");
         navigate("/login", { state: { message: "Session expired. Please login again." } });
       }
-      
-    }
     };
 
     checkAuth();
