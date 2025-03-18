@@ -7,7 +7,7 @@ export const register = async (data) => {
     const response = await axios.post(`${API_URL}/register`,data);
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    return error.response.data;
   }
 };
 

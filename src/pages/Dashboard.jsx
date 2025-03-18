@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect} from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
@@ -25,10 +25,26 @@ const bannerImages = [
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  if (user === null) {
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (!user) {
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate loading
+      }
+      setLoading(false);
+    };
+    checkAuth();
+  }, [user]);
+
+  if (loading) {
     return <p className="text-center text-gray-500 mt-10">Loading...</p>;
+  }
+
+  if (!user) {
+    navigate("/login");
+    return null;
   }
 
   const sliderSettings = {
