@@ -66,9 +66,10 @@ root.render(
         <Route element={<PublicRoute />}>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
         </Route>
 
-        <Route path="/register" element={<Register />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />

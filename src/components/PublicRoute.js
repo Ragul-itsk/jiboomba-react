@@ -2,17 +2,18 @@
 
 import { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
 
 const PublicRoute = () => {
-    const {token } = useContext(AuthContext);
     const location = useLocation();
+
+    console.log('Checking authentication...');
+    const token = localStorage.getItem("token");
 
     if (token) {
         return <Navigate to="/dashboard" state={{ from: location }} replace />;
     }
 
-    return <Outlet />;
+    return < Outlet/>;
 };
 
 export default PublicRoute;
