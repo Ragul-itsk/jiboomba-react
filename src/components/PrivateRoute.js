@@ -33,7 +33,7 @@ const PrivateRoute = () => {
       } catch (error) {
         console.log("Error verifying token:", error);
         localStorage.removeItem("token");
-        navigate("/login", { state: { message: "Session expired. Please login again." } });
+        navigate("/", { state: { message: "Session expired. Please login again." } });
       }
       
     }

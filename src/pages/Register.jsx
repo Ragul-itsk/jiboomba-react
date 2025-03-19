@@ -89,7 +89,7 @@
 
       const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); // Clear previous errors
+        setError(""); 
         try {
           const response = await register({ ...formData, portal_slug: "jiboomba" });
 
