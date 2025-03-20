@@ -21,6 +21,7 @@ const PrivateRoute = () => {
 
       try {
         const response = await verifyToken(token);
+        console.log(token);
         if (response?.data?.type === "valid") {
           console.log("Token is valid.");
           setLoading(false);

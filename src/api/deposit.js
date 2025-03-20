@@ -21,7 +21,7 @@
   
   export const getDepositMethod = async (token) => {
       try {
-        const response = await axios.get(`${API_URL}/player/get-deposit-method`, {
+        const response = await axios.get(`${API_URL}/player/payment-methods`, {
           headers: { Authorization: `Bearer ${token}` }, 
         });
       //   console.log("Deposit Methods Response:", response.data); 

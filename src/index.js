@@ -10,6 +10,8 @@ import PlayerProfile from "./pages/PlayerProfile";
 import DepositMethod from "./pages/DepositMethod";
 import DepositAmount from "./pages/DepositAmount";
 import SendDepositRequestForm from "./pages/SendDepositRequest";
+import WithdrawAmount from "./pages/WithdrawAmount";
+import PlayerBank from "./pages/PlayerBank";
 import SendWithdrawRequestForm from "./pages/SendWithdrawRequest";
 import StoreBankForm from "./pages/StoreBank";
 import ListBank from "./pages/ListBank";
@@ -79,6 +81,8 @@ root.render(
           <Route path="/deposit-method" element={<DepositMethod />} />
           <Route path="/store-bank" element={<StoreBankForm />} />
           <Route path="/list-bank" element={<ListBank />} />
+          <Route path="/withdraw-amount" element={<WithdrawAmount />} />
+          <Route path="/player-bank" element={<PlayerBank />} />
           <Route path="/withdraw-request" element={<SendWithdrawRequestForm />} />
           <Route path="/deposit-history" element={<DepositHistory />} />
           <Route path="/withdraw-history" element={<WithdrawHistory />} />
