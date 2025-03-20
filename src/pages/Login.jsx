@@ -49,7 +49,7 @@
           if (res.status === "success") {
             setOtpSent(true);
             // console.log('fdd',res.OTP);
-            setstaticOPT(res.otp) ;       
+            setstaticOPT(res.otp);       
           } else {
             setError("Failed to send OTP");
           }
