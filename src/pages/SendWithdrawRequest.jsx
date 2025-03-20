@@ -1,222 +1,162 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { sendWithdrawRequest, getBank } from "../api/withdraw"; 
+import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
+import { motion, AnimatePresence } from "framer-motion";
+import { sendWithdrawRequest, getBank } from "../api/withdraw";
 import Layout from "./Layout";
+import { FaHistory } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { AuthContext } from "../context/AuthContext";
+import { FaPlus, FaArrowRightLong } from "react-icons/fa6";
 
 export default function SendWithdrawRequestForm() {
-  const { token } = useContext(AuthContext);
-  const [formData, setFormData] = useState({ player_bank_id: "", amount: "", utr: "", image: "" });
-  const [error, setError] = useState("");
-  const [banks, setBanks] = useState([]); // Store bank data
   const navigate = useNavigate();
+  const location = useLocation(); // Use useLocation to get query params
+  const queryParams = new URLSearchParams(location.search);
+  const initialAmount = queryParams.get("amount") || ""; // Get amount from URL
 
-  // Fetch banks on component mount
+  const [isOpen, setIsOpen] = useState(true);
+  const [amount, setAmount] = useState(initialAmount);
+  const [error, setError] = useState("");
+  const { token } = useContext(AuthContext);
+  const [paymentDetails, setPaymentDetails] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("");
+
   useEffect(() => {
-    if (!token) return; // Ensure token exists
-  
-    const fetchBanks = async () => {
-      try {
-        const bankList = await getBank(token);
-        console.log("Bank List:", bankList); // Debugging
-        setBanks(bankList); // Already an array
-      } catch (error) {
-        console.error("Error fetching banks:", error);
-      }
-    };
-  
-    fetchBanks();
+    getBank(token)
+      .then((res) => {
+        if (Array.isArray(res) && res.length > 0) {
+          setPaymentDetails(res);
+          setSelectedOption(res[0].id); // Auto-select first bank
+        } else {
+          setError("No bank details available.");
+        }
+      })
+      .catch((error) => {
+        console.error("API Fetch Error:", error);
+        setError("Failed to fetch payment details.");
+      });
   }, [token]);
-  
-  // Handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    if (!amount) {
+      setError("Amount is required.");
+      return;
+    }
+    if (!selectedOption) {
+      setError("Please select a bank.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("player_bank_id", selectedOption);
+    formData.append("amount", amount);
     try {
       await sendWithdrawRequest(formData, token);
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err?.message || "Withdraw Request failed!");
+      navigate("/withdraw-history"); // Redirect on success
+    } catch (error) {
+      console.error("Error submitting withdrawal request:", error);
+      setError(error?.message || "Failed to send withdraw request.");
     }
   };
 
   return (
-//     <Layout>
-//     <div>
-//       <h2>Send Withdraw Request</h2>
-//       <form onSubmit={handleSubmit}>
+    <Layout>
+      <div className="p-0">
+        <div className="absolute inset-0 bg-black opacity-50 rounded-t-lg"></div>
 
-//         {/* Bank Selection */}
-// {/* Bank Selection */}
-// <div>
-//   <h4>Select a Bank</h4>
-//   {banks.length > 0 ? (
-//     banks.map((bank) => (
-//       <div key={bank.id} style={styles.card}>
-//         <input
-//           type="radio"
-//           name="player_bank_id"
-//           value={bank.id}
-//           onChange={(e) => setFormData({ ...formData, player_bank_id: e.target.value })}
-//           required
-//         />
-//         <div>
-//           <strong>Payment Method:</strong> {bank.payment_method?.name || "N/A"}
-//           <br />
-//           <strong>UPI ID:</strong> {bank.upi_id || "N/A"}
-//           <br />
-//           <strong>Account Number:</strong> {bank.account_number || "N/A"}
-//           <br />
-//           <strong>IFSC Code:</strong> {bank.ifsc_code || "N/A"}
-//           <br />
-//           <strong>Bank Name:</strong> {bank.bank_name || "N/A"}
-//           <br />
-//           <strong>Account Holder:</strong> {bank.account_holder_name || "N/A"}
-//           <br />
-//           <strong>Status:</strong> {bank.status === "0" ? "Inactive" : "Active"}
-//         </div>
-//       </div>
-//     ))
-//   ) : (
-//     <p>No banks available</p>
-//   )}
-// </div>
-
-
-// <input type="hidden" name="player_bank_id" value={formData.player_bank_id} />
-//         <input
-//           type="text"
-//           placeholder="Amount"
-//           onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-//           required
-//         />
-//         <input
-//           type="text"
-//           placeholder="UTR"
-//           onChange={(e) => setFormData({ ...formData, utr: e.target.value })}
-//           required
-//         />
-//         <input
-//           type="file"
-//           onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
-//           required
-//         />
-
-//         <button type="submit">Submit</button>
-//         {error && <p style={{ color: "red" }}>{error}</p>}
-//       </form>
-//     </div>
-//     </Layout>
-<Layout>
-  <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
-    <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Send Withdraw Request
-      </h2>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Bank Selection */}
-        <div>
-          <h4 className="text-lg font-semibold text-gray-700 mb-2">Select a Bank</h4>
-          {banks.length > 0 ? (
-            banks.map((bank) => (
-              <label
-                key={bank.id}
-                className="flex items-center gap-3 border border-gray-300 p-4 rounded-lg shadow-sm bg-gray-50 hover:bg-gray-100 cursor-pointer"
-              >
-                <input
-                  type="radio"
-                  name="player_bank_id"
-                  value={bank.id}
-                  onChange={(e) =>
-                    setFormData({ ...formData, player_bank_id: e.target.value })
-                  }
-                  required
-                  className="w-5 h-5 accent-blue-500"
-                />
-                <div className="text-sm text-gray-700">
-                  <strong>Payment Method:</strong> {bank.payment_method?.name || "N/A"}
-                  <br />
-                  <strong>UPI ID:</strong> {bank.upi_id || "N/A"}
-                  <br />
-                  <strong>Account Number:</strong> {bank.account_number || "N/A"}
-                  <br />
-                  <strong>IFSC Code:</strong> {bank.ifsc_code || "N/A"}
-                  <br />
-                  <strong>Bank Name:</strong> {bank.bank_name || "N/A"}
-                  <br />
-                  <strong>Account Holder:</strong> {bank.account_holder_name || "N/A"}
-                  <br />
-                  <strong>Status:</strong>{" "}
-                  <span
-                    className={`px-2 py-1 text-xs font-semibold rounded ${
-                      bank.status === "0" ? "bg-red-500 text-white" : "bg-green-500 text-white"
-                    }`}
-                  >
-                    {bank.status === "0" ? "Inactive" : "Active"}
-                  </span>
-                </div>
-              </label>
-            ))
-          ) : (
-            <p className="text-red-600 text-sm">No banks available</p>
-          )}
+        <div className="relative">
+          <div className="flex items-center justify-between mb-4 relative">
+            <button onClick={() => navigate(-1)} className="text-white">
+              <IoMdArrowRoundBack size={18} />
+            </button>
+            <h2 className="text-lg text-white font-semibold">Withdraw</h2>
+            <button onClick={() => navigate(-1)} className="text-white">
+              <FaHistory />
+            </button>
+          </div>
         </div>
 
-        <input type="hidden" name="player_bank_id" value={formData.player_bank_id} />
+        <AnimatePresence>
+          {isOpen && (
+            <div className="fixed bottom-10 inset-x-0 bg-cover bg-center p-0 rounded-t-lg">
+              <motion.div
+                className="absolute inset-0 opacity-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.5 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => setIsOpen(false)}
+              ></motion.div>
 
-        {/* Amount Input */}
-        <input
-          type="text"
-          placeholder="Amount"
-          onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-          required
-          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        {/* UTR Input */}
-        <input
-          type="text"
-          placeholder="UTR"
-          onChange={(e) => setFormData({ ...formData, utr: e.target.value })}
-          required
-          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        {/* File Upload */}
-        <input
-          type="file"
-          onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
-          required
-          className="w-full border border-gray-300 p-3 rounded-lg bg-white file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-white file:bg-blue-600 hover:file:bg-blue-700"
-        />
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-        >
-          Submit
-        </button>
-
-        {/* Error Message */}
-        {error && <p className="text-center text-red-600 text-sm">{error}</p>}
-      </form>
-    </div>
-  </div>
-</Layout>
-
+              <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 100, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                className="relative bg-white rounded-t-lg p-6 shadow-lg"
+              >
+                <label className="block text-lg font-semibold text-center mb-4 text-gray-700">
+                  Select Withdraw Bank ({amount})
+                </label>
+                <form onSubmit={handleSubmit}>
+                  <input type="hidden" name="amount" value={amount} />
+                  <div className="max-h-[220px] overflow-y-scroll mb-4">
+                    <ul className="grid w-full gap-6 md:grid-cols-2">
+                      {paymentDetails.map((bank) => (
+                        <li key={bank.id}>
+                          <input
+                            type="radio"
+                            id={bank.id}
+                            name="bank"
+                            value={bank.id}
+                            className="hidden peer"
+                            required
+                            onChange={() => setSelectedOption(bank.id)}
+                            checked={selectedOption === bank.id}
+                          />
+                          <label
+                            htmlFor={bank.id}
+                            className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100"
+                          >
+                            <div className="block">
+                              <div className="w-full">
+                                {bank.account_holder_name}, {bank.bank_name}
+                              </div>
+                              <div className="w-full">
+                                {bank.account_number} | {bank.ifsc_code}
+                              </div>
+                            </div>
+                            <FaArrowRightLong size={20} />
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  {error && <p className="text-red-500 mt-2">{error}</p>}
+                  <div className="flex">
+                    <button
+                      type="submit"
+                      className="w-3/4 mx-1 py-2 rounded-md mt-2 bg-green-500 text-white hover:bg-green-600"
+                    >
+                      Submit
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => navigate("/player-bank")}
+                      className="w-1/5 mx-1 py-2 rounded-md mt-2 bg-white-500 text-gray-500 hover:bg-blue-600 border"
+                    >
+                      <FaPlus className="m-auto" size={18} />
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
+    </Layout>
   );
 }
-
-// Simple card styling
-const styles = {
-  card: {
-    border: "1px solid #ddd",
-    padding: "10px",
-    marginBottom: "8px",
-    borderRadius: "5px",
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-  },
-};
