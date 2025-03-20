@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_URL = "https://staging.syscorp.in/api/jiboomba"; 
+
 export const register = async (data) => {
   console.log(data)
   try {
@@ -80,32 +81,32 @@ export const verifyToken = async (token) => {
   }
 };
 
-export const authenticationType = async (data = {}) => {
-  try {
+  export const authenticationType = async (data = {}) => {
+    try {
 
 
-    const response = await axios.get(`${API_URL}/authentication-type`, { params: data });
+      const response = await axios.get(`${API_URL}/authentication-type`, { params: data });
 
-    console.log("API Response:", response);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching login type:", error);
-    throw error;
-  }
-};
+      console.log("API Response:", response);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching login type:", error);
+      throw error;
+    }
+  };
 
 
-export const loginOtpVerify = async (data) => {
+  export const authenticationOtpVerify = async (data) => {
 
-  try {
-    const response = await axios.post(`${API_URL}/login-otp-verify`,data);
-    // console.log('rretrt',response.data) 
-    return response.data;
-    
-  } catch (error) {
-    throw error.response.data;
-  }
-};
+    try {
+      const response = await axios.post(`${API_URL}/authentication-otp-verify`,data);
+      // console.log('rretrt',response.data) 
+      return response.data;
+      
+    } catch (error) {
+      throw error.response.data;
+    }
+  };
 
 
 
