@@ -7,7 +7,7 @@ function App() {
         <h1 className="text-3xl font-bold text-blue-600 mb-6">
           Welcome to Jiboomba
         </h1>
-        <nav className="space-x-4">
+        <nav className="space-x-4">     
         <Link to="/login" className="button">
         <button className="py-3 px-8 bg-green-500 rounded shadow text-white">Login</button>
         </Link>
