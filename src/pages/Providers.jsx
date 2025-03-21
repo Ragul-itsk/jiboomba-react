@@ -12,7 +12,7 @@ export default function Providers() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch("https://staging.syscorp.in/api/jiboomba/all-games");
+        const response = await fetch("https://staging.syscorp.in/api/v1/jiboomba/all-games");
         const data = await response.json();
         if (data.status === "success") {
           const groupedProviders = groupByProvider(data.allGames);

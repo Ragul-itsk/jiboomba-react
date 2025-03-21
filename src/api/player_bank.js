@@ -1,6 +1,6 @@
     import axios from "axios";
 
-    const API_URL = "https://staging.syscorp.in/api/jiboomba"; 
+    const API_URL = "https://staging.syscorp.in/api/v1/jiboomba"; 
 
     export const storeBank = async (data, token) => {
     try {

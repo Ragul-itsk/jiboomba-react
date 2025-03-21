@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "./Layout";
 import { FaRegEye } from "react-icons/fa";
 
-const API_URL = "https://staging.syscorp.in/api/jiboomba";
+const API_URL = "https://staging.syscorp.in/api/v1/jiboomba";
 
 export default function ListBank() {
   const { token } = useContext(AuthContext);

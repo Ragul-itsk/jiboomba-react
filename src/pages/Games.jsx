@@ -19,7 +19,7 @@ export default function Games() {
   const fetchProviders = async () => {
     try {
       const response = await fetch(
-        "https://staging.syscorp.in/api/jiboomba/providers-list"
+        "https://staging.syscorp.in/api/v1/jiboomba/providers-list"
       );
       const data = await response.json();
 
@@ -37,8 +37,8 @@ export default function Games() {
     try {
       const url =
         query.length >= 3
-          ? `https://staging.syscorp.in/api/jiboomba/all-games?search=${query}&page=${pageNumber}&limit=50`
-          : `https://staging.syscorp.in/api/jiboomba/all-games?page=${pageNumber}&limit=50`;
+          ? `https://staging.syscorp.in/api/v1/jiboomba/all-games?search=${query}&page=${pageNumber}&limit=50`
+          : `https://staging.syscorp.in/api/v1/jiboomba/all-games?page=${pageNumber}&limit=50`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -104,7 +104,7 @@ export default function Games() {
     try {
       
       const response = await fetch(
-        `https://staging.syscorp.in/api/jiboomba/player/${provider}/launch/${name}/${uuid}`,
+        `https://staging.syscorp.in/api/v1/jiboomba/player/${provider}/launch/${name}/${uuid}`,
         {
           method: "GET",
           headers: {

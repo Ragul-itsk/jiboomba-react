@@ -29,7 +29,7 @@ export default function SendWithdrawRequestForm() {
     const token = localStorage.getItem("token");
     if (token) {
       const profile = await getProfile(token);
-      if (amount > profile.data.player.chips) {
+      if (Number(amount) > Number(profile.data.player.chips)) {
         setError("Insufficient chips");
       } else {
         setError(""); // Clear errors

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/jiboomba"; 
+const API_URL = "https://staging.syscorp.in/api/v1/jiboomba"; 
 
 export const register = async (data) => {
   console.log(data)
@@ -32,13 +32,12 @@ export const getProfile = async (token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     
-    // Print the response to the console
+
     // console.log("API Response:", response);
 
-    // Return the response if needed
     return response;
   } catch (error) {
-    // Handle any errors that might occur
+  
     console.error("Error fetching profile:", error);
   }
 };
@@ -100,7 +99,7 @@ export const verifyToken = async (token) => {
 
     try {
       const response = await axios.post(`${API_URL}/authentication-otp-verify`,data);
-      // console.log('rretrt',response.data) 
+      console.log('rretrt',response.data) 
       return response.data;
       
     } catch (error) {
