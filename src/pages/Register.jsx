@@ -48,7 +48,7 @@ export default function Register() {
           }
         } catch (error) {
           console.error("Error checking player name", error);
-          setPlayerNameStatus("Error checking name");
+          setPlayerNameStatus("Player name already exists.");
         }
       };
 
@@ -74,7 +74,7 @@ export default function Register() {
         }
       } else {
         const res = await register({ ...formData, portal_slug: "jiboomba", type });
-        if (!res || !res.token) throw new Error("Invalid credentials");
+        if (!res || !res.token) throw new Error("This mobile is already exist in this Portal.");
 
         localStorage.setItem("token", res.token);
         updateToken(res.token);
@@ -86,7 +86,7 @@ export default function Register() {
         navigate("/dashboard");
       }
     } catch (err) {
-      setError("Invalid credentials");
+      setError("This mobile is already exist in this Portal.");
     }
   };
 
@@ -120,6 +120,12 @@ export default function Register() {
           <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold text-center text-green-600 mb-6">Register</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
+            {playerNameStatus && (
+          <p className={`text-md text-end ${playerNameStatus === "Available" ? "text-green-500" : "text-red-500"}`}
+  >
+    {playerNameStatus}
+  </p>
+)}
             <input
             type="text"
             placeholder="Name"
@@ -128,7 +134,7 @@ export default function Register() {
             required
             className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500"
           />
-          {playerNameStatus && <p className="text-sm text-center">{playerNameStatus}</p>}
+          {/* {playerNameStatus && <p className="text-sm text-center">{playerNameStatus}</p>} */}
               <input type="text" placeholder="Mobile" value={formData.mobile} onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} required className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500" />
               <input type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500" />
               {error && <p className="text-red-500 text-sm text-center">{error}</p>}
