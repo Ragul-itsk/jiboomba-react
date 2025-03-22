@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/jiboomba"; 
+const API_URL = "https://staging.syscorp.in/api/v1/jiboomba"; 
 export const sendWithdrawRequest = async (data, token) => {
   try {
     const response = await axios.post(

@@ -69,11 +69,8 @@ export default function SendDepositRequestForm() {
     setError("");
   };
 
-  const activeDetail =
-  paymentDetails.length > 0
-    ? paymentDetails.find((detail) => detail.payment_method.id === selectedMethod)
-    : null;
-
+  const activeDetail = 1
+  
   // Handle form submission
   const handleUTR = () => {
 

@@ -63,7 +63,7 @@ export default function Dashboard() {
         {/* Top Navbar & Profile Info Fixed */}
         <div className="fixed top-0 left-0 w-full bg-white shadow-md mt-14 z-20">
           <div className="bg-white shadow-md p-4 text-center relative">
-            <h2 className="text-xl font-bold">Welcome, {user.player.name}!</h2>
+            <h2 className="text-xl font-bold">Welcome, {user.player.playername}!</h2>
             <div className="flex justify-center">
               <p className="text-gray-600 flex items-center gap-2">
                 Chips: {user.player.chips}

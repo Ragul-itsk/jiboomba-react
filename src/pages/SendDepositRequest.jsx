@@ -119,7 +119,7 @@ export default function SendDepositRequestForm() {
       }
   
       await sendDepositRequest(formDataPayload, token);
-      navigate("/dashboard");
+      navigate("/deposit-history");
     } catch (err) {
       setError(err?.message || "Deposit Request failed!");
     }

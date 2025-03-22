@@ -27,39 +27,6 @@ import PublicRoute from "./components/PublicRoute";
 import "./index.css";
 import Layout from "./pages/Layout";
 
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(
-//     <AuthProvider>
-//       <BrowserRouter>
-//         <Routes>
-//         <Route element={<PublicRoute />}>
-//                 <Route path="/" element={<App />} />
-//                 <Route path="/login" element={<Login />} />
-//             </Route>
-
-//           <Route path="/register" element={<Register />} />
-
-//           <Route element={<PrivateRoute />}>
-//           <Route path="/dashboard" element={<Dashboard />} />
-//           <Route path="/profile" element={<PlayerProfile />} />
-//           <Route path="/deposit-request" element={<SendDepositRequestForm />} />
-//           <Route path="/deposit-method" element={<DepositMethod />} />
-//           <Route path="/store-bank" element={<StoreBankForm/>} />
-//           <Route path="/list-bank" element={<ListBank/>} />
-//           <Route path="/withdraw-request" element={<SendWithdrawRequestForm/>} />
-//           <Route path="/deposit-history" element={<DepositHistory/>} />
-//           <Route path="/withdraw-history" element={<WithdrawHistory/>} />
-//           <Route path="/deposit-amount" element={<DepositAmount/>} />
-//           <Route path="/logout" element={<Layout />} />
-//           </Route>
-          
-//           <Route path="/providers" element={<Providers/>} />
-//           <Route path="/games" element={<Games/>} />
-
-//         </Routes>
-//       </BrowserRouter>
-//     </AuthProvider>
-// );
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
