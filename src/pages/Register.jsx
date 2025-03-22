@@ -3,9 +3,10 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { register, getProfile, authenticationType, authenticationOtpVerify } from "../api/auth";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 export default function Register() {
-  const [formData, setFormData] = useState({ name: "", mobile: "", password: "" });
+  const [formData, setFormData] = useState({ player_name: "", mobile: "", password: "" });
   const [error, setError] = useState("");
   const [otpRequired, setOtpRequired] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -13,6 +14,7 @@ export default function Register() {
   const [type, setType] = useState("register");
   const [otp, setOtp] = useState(""); 
   const [staticOTP, setStaticOTP] = useState("");
+  const [playerNameStatus, setPlayerNameStatus] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,6 +36,29 @@ export default function Register() {
     fetchLoginType();
   }, []);
 
+  useEffect(() => {
+    if (formData.player_name.length >= 3) {
+      const checkPlayerName = async () => {
+        try {
+          const response = await axios.get(`https://staging.syscorp.in/api/v1/jiboomba/check-player-name?player_name=${formData.player_name}`);
+          if (response.data.status === "success") {
+            setPlayerNameStatus("Available");
+          } else if(response.data.status === "failed") {
+            setPlayerNameStatus("Name is already taken");
+          }
+        } catch (error) {
+          console.error("Error checking player name", error);
+          setPlayerNameStatus("Error checking name");
+        }
+      };
+
+      checkPlayerName();
+    } else {
+      setPlayerNameStatus(null);
+    }
+  }, [formData.player_name]);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -45,7 +70,7 @@ export default function Register() {
           setOtpSent(true);
           setStaticOTP(res.otp);
         } else {
-          setError("Failed to send OTP");
+          setError("This Mobile is already registered. ");
         }
       } else {
         const res = await register({ ...formData, portal_slug: "jiboomba", type });
@@ -95,7 +120,15 @@ export default function Register() {
           <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold text-center text-green-600 mb-6">Register</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <input type="text" placeholder="Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500" />
+            <input
+            type="text"
+            placeholder="Name"
+            value={formData.player_name}
+            onChange={(e) => setFormData({ ...formData, player_name: e.target.value })}
+            required
+            className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500"
+          />
+          {playerNameStatus && <p className="text-sm text-center">{playerNameStatus}</p>}
               <input type="text" placeholder="Mobile" value={formData.mobile} onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} required className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500" />
               <input type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500" />
               {error && <p className="text-red-500 text-sm text-center">{error}</p>}
@@ -109,7 +142,22 @@ export default function Register() {
         <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
           <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold text-center text-green-600 mb-6">Register</h2>
+            {playerNameStatus && (
+          <p className={`text-md text-end ${playerNameStatus === "Available" ? "text-green-500" : "text-red-500"}`}
+  >
+    {playerNameStatus}
+  </p>
+)}
             <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+            type="text"
+            placeholder="Name"
+            value={formData.player_name}
+            onChange={(e) => setFormData({ ...formData, player_name: e.target.value })}
+            required
+            className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500"
+          />
+          
               <input type="text" placeholder="Mobile" value={formData.mobile} onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} required className="w-full p-3 border rounded focus:ring-2 focus:ring-green-500" />
               {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition">Send OTP</button>

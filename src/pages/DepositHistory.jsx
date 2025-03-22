@@ -135,7 +135,7 @@ export default function ListBank() {
                         <button
                           onClick={() =>
                             setSelectedImage(
-                              `https://staging.syscorp.in/storage/${deposit.image}`
+                              `${deposit.image}`
                             )
                           }
                         >
