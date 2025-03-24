@@ -39,4 +39,16 @@
         }
         };
 
+        export const fetchStatement = async (token) => {
+            try {
+                const response = await axios.get(`${API_URL}/player/statement`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                return response.data;
+            } catch (error) {
+                console.error("Error fetching payment statement:", error);
+                return { status: "error", depositHistory: [] };
+            }
+        };
+
         

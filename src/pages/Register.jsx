@@ -142,6 +142,7 @@ export default function Register() {
             </form>
           </div>
         </div>
+        
       )}
 
       {(registerData?.type === "otp" || registerData?.type === "static_otp") && !otpSent && (
