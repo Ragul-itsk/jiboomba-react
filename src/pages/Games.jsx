@@ -11,7 +11,8 @@ export default function Games() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [providers, setProviders] = useState([]);
+  const [providers, setProviders] = useState([]); 
+  
   const [types, setTypes] = useState([]);
   const chunkSize = 20; // Load 20 games at a time
   const navigate = useNavigate();
