@@ -5,6 +5,8 @@ import { AuthContext } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "./Layout";
 import { FaRegCopy } from "react-icons/fa6";
+import { FaHistory } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 export default function SendDepositRequestForm() {
   const { token, depositMethods } = useContext(AuthContext);
@@ -69,11 +71,10 @@ export default function SendDepositRequestForm() {
     setError("");
   };
 
-  const activeDetail = 1
-  
+  const activeDetail = 1;
+
   // Handle form submission
   const handleUTR = () => {
-
     if (!activeDetail) {
       alert("No payment details available for this method!");
       return;
@@ -92,9 +93,16 @@ export default function SendDepositRequestForm() {
 
         {/* Header */}
         <div className="relative flex items-center justify-between p-4 text-white">
-          <button onClick={() => navigate(-1)}>&#8592; Back</button>
-          <h2 className="text-lg font-semibold">Deposit</h2>
-          <button onClick={() => navigate(-1)}>Close</button>
+          <button onClick={() => navigate(-1)} className="text-white">
+            <IoMdArrowRoundBack size={18} />
+          </button>
+          <h2 className="text-lg text-white font-semibold">Deposit</h2>
+          <button
+            onClick={() => navigate("/deposit-history")}
+            className="text-white"
+          >
+            <FaHistory />
+          </button>
         </div>
 
         {/* Modal Animation */}
@@ -158,13 +166,6 @@ export default function SendDepositRequestForm() {
                 <motion.div className="mt-4 p-4 border rounded-lg bg-gray-50 h-[270px] overflow-auto">
                   {selectedMethod ? (
                     <>
-                      <h3 className="text-lg text-center font-semibold">
-                        {" "}
-                        {
-                          depositMethods.find((m) => m.id === selectedMethod)
-                            ?.name
-                        }
-                      </h3>
 
                       {/* Loading State */}
                       {isLoading ? (

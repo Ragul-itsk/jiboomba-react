@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "./Layout";
+import { FaHistory } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 export default function DepositPage() {
   const navigate = useNavigate();
@@ -37,11 +39,11 @@ export default function DepositPage() {
         <div className="relative ">
           <div className="flex items-center justify-between mb-4 relative ">
             <button onClick={() => navigate(-1)} className="text-white">
-              &#8592; Back
+              <IoMdArrowRoundBack size={18} />
             </button>
             <h2 className="text-lg text-white font-semibold">Deposit</h2>
-            <button onClick={() => navigate(-1)} className="text-white">
-              Close
+            <button onClick={() => navigate('/deposit-history')} className="text-white">
+              <FaHistory />
             </button>
           </div>
         </div>
