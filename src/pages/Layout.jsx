@@ -153,6 +153,15 @@ const Layout = ({ children }) => {
               <GrTransaction size={32} className="p-1 mx-2" />
              Transactions
             </button>
+<Link to="/statement">  
+            <button
+              type="button"
+              className="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
+            >
+              <GrTransaction size={32} className="p-1 mx-2" />
+             Statement
+            </button>
+            </Link>
             <Link to="/deposit-history">
             <button
               type="button"

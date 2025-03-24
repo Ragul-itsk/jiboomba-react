@@ -102,15 +102,19 @@ export default function Games() {
   // Launch Game (Open in iFrame)
   const launchGame = async (provider, name, uuid) => {
     try {
-      
+      // const currentUrl = window.location.href;  
+      const currentUrl ="https://jiboomba.in/games";  
       const response = await fetch(
-        `https://staging.syscorp.in/api/v1/jiboomba/player/${provider}/launch/${name}/${uuid}`,
+        `https://staging.syscorp.in/api/v1/jiboomba/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(currentUrl)}`,
         {
           method: "GET",
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
+          data:{
+            return_url:currentUrl 
+          }
         }
       );
       const data = await response.json();
