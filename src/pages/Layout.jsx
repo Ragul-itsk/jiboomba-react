@@ -42,12 +42,12 @@ const Layout = ({ children }) => {
       {/* Top Navbar & Profile Info Fixed */}
       <div className="fixed top-0 left-0 w-full bg-white shadow-md z-30">
         <header className="flex justify-between items-center bg-blue-600 p-4 text-white">
-          {/* <h1 className="text-xl font-bold">Jiboomba</h1> */}
+          {/* <h1 className="text-xl font-bold">starbuks</h1> */}
           <h1
             className="text-xl font-bold cursor-pointer"
             onClick={() => navigate("/dashboard")}
           >
-            Jiboomba
+            starbuks
           </h1>
 
           <button onClick={() => setSidebarOpen(true)} className="text-2xl">
@@ -71,9 +71,9 @@ const Layout = ({ children }) => {
           </button>
           {/* Profile model */}
           <div className="w-full max-w-llg bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-           
             <div className="flex flex-col items-center pb-10 mt-10">
-              <img onClick={() =>navigate('/profile')}
+              <img
+                onClick={() => navigate("/profile")}
                 className="w-24 h-24 mb-3 rounded-full shadow-lg"
                 src="assets/images/sample-profile.png"
                 alt="Profile Image"
@@ -128,16 +128,16 @@ const Layout = ({ children }) => {
               </button>
             </Link>
             <Link to="/change-password">
-            <button
-              type="button"
-              className="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
-            >
-              <PiPassword size={32} className="p-1 mx-2" />
-              Change Password
-            </button>
+              <button
+                type="button"
+                className="relative inline-flex items-center w-full px-4 py-4 text-m font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
+              >
+                <PiPassword size={32} className="p-1 mx-2" />
+                Change Password
+              </button>
             </Link>
-            <button 
-               onClick={handleLogout}
+            <button
+              onClick={handleLogout}
               // type="button"
               className="relative inline-flex items-center w-full px-4 py-4 text-red-600 text-m font-medium rounded-b-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
             >

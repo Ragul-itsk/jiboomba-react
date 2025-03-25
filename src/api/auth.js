@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/v1/jiboomba"; 
+const API_URL = "https://staging.syscorp.in/api/v1/starbuks"; 
 
 export const register = async (data) => {
   console.log(data)

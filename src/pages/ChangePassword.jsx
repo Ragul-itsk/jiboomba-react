@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/v1/jiboomba";
+const API_URL = "https://staging.syscorp.in/api/v1/starbuks";
 
 const ChangePasswordRequest = () => {
   const [mobile, setMobile] = useState("");
@@ -13,7 +13,7 @@ const ChangePasswordRequest = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { token } = useContext(AuthContext);  
+  const { token } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -75,7 +75,7 @@ const ChangePasswordRequest = () => {
         mobile,
         old_password: oldPassword,
         password: newPassword,
-        password_confirmation: confirmPassword,   
+        password_confirmation: confirmPassword,
       });
 
       console.log("Password Change Response:", response);
