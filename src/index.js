@@ -5,6 +5,7 @@ import App from "./App";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPasswordOtpGenerate from "./pages/ForgotPasswordOtpGenerate";
+import ChangePassword from "./pages/ChangePassword";
 import Dashboard from "./pages/Dashboard";
 import PlayerProfile from "./pages/PlayerProfile";
 import DepositMethod from "./pages/DepositMethod";
@@ -57,6 +58,7 @@ root.render(
           <Route path="/deposit-amount" element={<DepositAmount />} />
           <Route path="/statement" element={<Statement />} />
           <Route path="/logout" element={<Layout />} />
+          <Route path="/change-password" element={<ChangePassword />} />
         </Route>
 
         <Route path="/providers" element={<Providers />} />

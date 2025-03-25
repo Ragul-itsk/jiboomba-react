@@ -15,9 +15,7 @@ const bannerImages = [
   "assets/images/banners/gamzix-banner.jpg",
   "assets/images/banners/drops_wins-banner.jpg",
 ];
-
-
-
+  
   const games = [
     { id: 1, provider:"SuperSpadeGames",uuid:"fefb56935028b6efed8dc7fca86004550905a00a", name: "Teenpatti", image: "https://stage.gis-static.com/games/SuperSpadeGames/fefb56935028b6efed8dc7fca86004550905a00a.png", },
     { id: 2, provider:"TaDaGaming",uuid:"7f3e848cd71549628d2b848dcc5fdee4", name: "Color Prediction", image: "https://stage.gis-static.com/games/TaDaGaming/7f3e848cd71549628d2b848dcc5fdee4.png",},
