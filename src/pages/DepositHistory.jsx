@@ -6,7 +6,6 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "./Layout";
 import { FaRegEye } from "react-icons/fa";
-import { FaHistory } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const API_URL = "https://staging.syscorp.in/api/v1/jiboomba";

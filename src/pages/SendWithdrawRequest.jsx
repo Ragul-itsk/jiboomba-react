@@ -73,7 +73,7 @@ export default function SendWithdrawRequestForm() {
               <IoMdArrowRoundBack size={18} />
             </button>
             <h2 className="text-lg text-white font-semibold">Withdraw</h2>
-            <button onClick={() => navigate(-1)} className="text-white">
+            <button onClick={() => navigate('/withdraw-history')} className="text-white">
               <FaHistory />
             </button>
           </div>
@@ -106,30 +106,33 @@ export default function SendWithdrawRequestForm() {
                   <div className="max-h-[220px] overflow-y-scroll mb-4">
                     <ul className="grid w-full gap-6 md:grid-cols-2">
                       {paymentDetails.map((bank) => (
-                        <li key={bank.id}>
+                        <li key={bank.id} className="relative">
                           <input
                             type="radio"
-                            id={bank.id}
+                            id={`bank-${bank.id}`}
                             name="bank"
-                            value={bank.id}
-                            className="hidden peer"
+                            value={bank.id.toString()} // Ensure value is a string
+                            className="absolute opacity-0 w-0 h-0 peer"
                             required
-                            onChange={() => setSelectedOption(bank.id)}
-                            checked={selectedOption === bank.id}
+                            onChange={(e) => setSelectedOption(e.target.value)}
+                            checked={selectedOption === bank.id.toString()}
                           />
                           <label
-                            htmlFor={bank.id}
-                            className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100"
+                            htmlFor={`bank-${bank.id}`}
+                            className="flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 peer-checked:border-blue-500 peer-checked:ring-2 peer-checked:ring-blue-400"
                           >
-                            <div className="block">
-                              <div className="w-full">
+                            <div>
+                              <div className="font-semibold">
                                 {bank.account_holder_name}, {bank.bank_name}
                               </div>
-                              <div className="w-full">
+                              <div className="text-sm">
                                 {bank.account_number} | {bank.ifsc_code}
                               </div>
                             </div>
-                            <FaArrowRightLong size={20} />
+                            <FaArrowRightLong
+                              size={20}
+                              className="text-gray-500"
+                            />
                           </label>
                         </li>
                       ))}
