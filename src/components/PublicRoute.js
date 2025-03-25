@@ -4,8 +4,6 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const PublicRoute = () => {
     const location = useLocation();
-
-    console.log('Checking authentication...');
     const token = localStorage.getItem("token");
 
     if (token) {
