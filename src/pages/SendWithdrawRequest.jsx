@@ -7,13 +7,14 @@ import { FaHistory } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AuthContext } from "../context/AuthContext";
 import { FaPlus, FaArrowRightLong } from "react-icons/fa6";
+import Toastr from "../components/Toastr";
 
 export default function SendWithdrawRequestForm() {
   const navigate = useNavigate();
   const location = useLocation(); // Use useLocation to get query params
   const queryParams = new URLSearchParams(location.search);
-  const initialAmount = queryParams.get("amount") || ""; // Get amount from URL
-
+  const initialAmount = queryParams.get("amount") || ""; 
+  const [toastrMessage, setToastrMessage] = useState(null);
   const [isOpen, setIsOpen] = useState(true);
   const [amount, setAmount] = useState(initialAmount);
   const [error, setError] = useState("");
@@ -55,15 +56,21 @@ export default function SendWithdrawRequestForm() {
     formData.append("amount", amount);
     try {
       await sendWithdrawRequest(formData, token);
-      navigate("/withdraw-history"); // Redirect on success
+      // Redirect on success
+      setToastrMessage("withdraw request submitted successfully!");
+      setTimeout(() => {
+        navigate("/withdraw-history"); 
+      }, 2000);
     } catch (error) {
       console.error("Error submitting withdrawal request:", error);
       setError(error?.message || "Failed to send withdraw request.");
+      setToastrMessage("withdrawal request failed!");
     }
   };
 
   return (
     <Layout>
+       {toastrMessage && <Toastr message={toastrMessage} />}
       <div className="p-0">
         <div className="absolute inset-0 bg-black opacity-50 rounded-t-lg"></div>
 

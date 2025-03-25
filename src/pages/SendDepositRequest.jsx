@@ -5,10 +5,14 @@ import { AuthContext } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "./Layout";
 import { FaRegCopy } from "react-icons/fa6";
+import Toastr from "../components/Toastr";
+import { div } from "framer-motion/client";
+
 
 export default function SendDepositRequestForm() {
   const { token, depositMethods } = useContext(AuthContext);
   const [selectedMethod, setSelectedMethod] = useState("");
+  const [toastrMessage, setToastrMessage] = useState(null);
   const [isOpen, setIsOpen] = useState(true);
   const [paymentDetails, setPaymentDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +25,7 @@ export default function SendDepositRequestForm() {
     utr: "",
     image: null,
   });
+  
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -30,8 +35,8 @@ export default function SendDepositRequestForm() {
   const activeType = queryParams.get("activeType");
 
   const handleCopy = (text) => {
-    navigator.clipboard.writeText(text);
-    alert("Copied to clipboard!"); // Optional: Show alert or toast
+    navigator.clipboard.writeText(text);  
+    alert("Copied to clipboard!"); 
   };
 
   // Set default selected method on page load
@@ -82,17 +87,7 @@ export default function SendDepositRequestForm() {
     setError("");
   };
 
-  // Handle form submission
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     console.log(formData);
-  //     await sendDepositRequest(formData, token);
-  //     navigate("/dashboard");
-  //   } catch (err) {
-  //     setError(err?.message || "Deposit Request failed!");
-  //   }
-  // };
+
 
 // new 
   const handleSubmit = async (e) => {
@@ -119,14 +114,23 @@ export default function SendDepositRequestForm() {
       }
   
       await sendDepositRequest(formDataPayload, token);
-      navigate("/deposit-history");
+      setToastrMessage("Deposit request submitted successfully!");
+      setTimeout(() => {
+        navigate("/deposit-history");
+      }, 2000);
     } catch (err) {
       setError(err?.message || "Deposit Request failed!");
+      setToastrMessage("Deposit request failed!");
     }
   };
   
 
+
   return (
+
+    <>
+    {<Toastr message={toastrMessage} />}
+
     <Layout>
       <div className="p-0 ">
         {/* Overlay */}
@@ -165,7 +169,7 @@ export default function SendDepositRequestForm() {
                     {amount}
                   </span>
                 </div>
-
+    
                 <h3 className="text-lg font-semibold text-center text-gray-700 mb-4">
                   Enter UTR to Confirm Deposit
                 </h3>
@@ -199,7 +203,7 @@ export default function SendDepositRequestForm() {
                       setFormData({ ...formData, image: e.target.files[0] })
                     }
                   />
-
+                    
                   <button
                     type="submit"
                     className="w-full py-2 rounded-lg mt-2 bg-green-500 text-white hover:bg-green-600"
@@ -227,5 +231,6 @@ export default function SendDepositRequestForm() {
         </AnimatePresence>
       </div>
     </Layout>
+    </>
   );
 }

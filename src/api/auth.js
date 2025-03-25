@@ -139,7 +139,7 @@ export const  forgotPasswordOtpGenerate = async (data) => {
 
     try {
       const response = await axios.post(`${API_URL}/new-password-create`,data);
-      // console.log('rretrt',response.data) 
+      console.log('rretrt',response.data) 
       return response.data;
       
     } catch (error) {

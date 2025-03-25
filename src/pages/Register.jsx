@@ -15,11 +15,13 @@ export default function Register() {
   const [otp, setOtp] = useState(""); 
   const [staticOTP, setStaticOTP] = useState("");
   const [playerNameStatus, setPlayerNameStatus] = useState(null);
-
+  const [timer, setTimer] = useState(600); 
+  const [resendEnabled, setResendEnabled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const message = location.state?.message;
   const { setUser, updateToken } = useContext(AuthContext);
+
 
   useEffect(() => {
     const fetchLoginType = async () => {
@@ -69,6 +71,8 @@ export default function Register() {
         if (res.status === "success") {
           setOtpSent(true);
           setStaticOTP(res.otp);
+          setTimer(600); 
+          setResendEnabled(false);
         } else if(res.status === "error"){
           console.log("error messages", Object.values(res.errors[0]));
           setError(Object.values(res.errors[0]));
@@ -94,6 +98,21 @@ export default function Register() {
     }
   };
 
+  useEffect(() => {
+    if (otpSent && timer > 0) {
+      const countdown = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(countdown);
+    }
+
+    if (timer === 0) {
+      setResendEnabled(true);
+    }
+  }, [otpSent, timer]);
+
+
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -114,6 +133,22 @@ export default function Register() {
       }
     } catch (err) {
       setError("Invalid OTP, please try again.");
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setError("");
+    try {
+      const res = await register({ mobile: formData.mobile, player_name: formData.player_name, type, portal_slug: "jiboomba" });
+      if (res.status === "success") {
+        setStaticOTP(res.otp);
+        setTimer(600); // Restart 10-minute timer
+        setResendEnabled(false);
+      } else {
+        setError("Failed to resend OTP, try again.");
+      }
+    } catch (err) {
+      setError("Failed to resend OTP, try again.");
     }
   };
 
@@ -187,12 +222,25 @@ export default function Register() {
               <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} required className="w-full p-3 border rounded focus:ring-2 focus:ring-blue-500" />
               {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition">Verify OTP & Login</button>
+
+              <p className="text-center text-gray-500 mt-2">
+                Time <span className="font-bold">{Math.floor(timer / 60)}:{("0" + (timer % 60)).slice(-2)}</span>
+              </p>
+              {resendEnabled && (
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  className="w-full mt-2 bg-gray-600 text-white py-2 rounded hover:bg-gray-700 transition"
+                >
+                  Resend OTP
+                </button>
+              )}
             </form>
           </div>
         </div>
       )}
     </>
   );
-}
+} 
 
 
