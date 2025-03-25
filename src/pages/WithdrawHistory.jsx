@@ -8,8 +8,7 @@ import { FaRegEye } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdCancel } from "react-icons/md";
 
-
-const API_URL = "https://staging.syscorp.in/api/v1/jiboomba";
+const API_URL = "https://staging.syscorp.in/api/v1/starbuks";
 
 export default function WithdrawList() {
   const { token } = useContext(AuthContext);
@@ -104,7 +103,9 @@ export default function WithdrawList() {
                       </p>
                     </th>
                     <td>{withdraw.amount}</td>
-                    <td className="text-red-500"><MdCancel className="m-auto" size={20}/></td>
+                    <td className="text-red-500">
+                      <MdCancel className="m-auto" size={20} />
+                    </td>
                     <td>{withdraw.remarks || "-"}</td>
                   </tr>
                 ))

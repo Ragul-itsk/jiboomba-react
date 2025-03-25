@@ -12,7 +12,9 @@ export default function Providers() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch("https://staging.syscorp.in/api/v1/jiboomba/all-games");
+        const response = await fetch(
+          "https://staging.syscorp.in/api/v1/starbuks/all-games"
+        );
         const data = await response.json();
         if (data.status === "success") {
           const groupedProviders = groupByProvider(data.allGames);
@@ -43,7 +45,10 @@ export default function Providers() {
 
   // Load more providers on scroll
   const fetchMoreProviders = () => {
-    const nextChunk = providers.slice(displayedProviders.length, displayedProviders.length + chunkSize);
+    const nextChunk = providers.slice(
+      displayedProviders.length,
+      displayedProviders.length + chunkSize
+    );
     if (nextChunk.length === 0) {
       setHasMore(false);
     } else {
@@ -54,7 +59,6 @@ export default function Providers() {
   return (
     <Layout>
       <div className="flex flex-col min-h-screen bg-gray-100 relative">
-        
         {/* Search Bar */}
         <div className="fixed top-0 left-0 w-full bg-white shadow-md mt-14 p-4 z-20">
           <input
@@ -77,9 +81,14 @@ export default function Providers() {
           >
             <div className="grid grid-cols-2 gap-4">
               {displayedProviders.map((provider, index) => (
-                <div key={index} className="bg-white p-3 rounded-lg shadow-md text-center">
+                <div
+                  key={index}
+                  className="bg-white p-3 rounded-lg shadow-md text-center"
+                >
                   <p className="font-semibold">{provider.name}</p>
-                  <p className="text-sm text-gray-500">{provider.totalGames} Mobile Games</p>
+                  <p className="text-sm text-gray-500">
+                    {provider.totalGames} Mobile Games
+                  </p>
                 </div>
               ))}
             </div>
