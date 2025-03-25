@@ -60,7 +60,7 @@ export default function SendWithdrawRequestForm() {
               <IoMdArrowRoundBack size={18} />
             </button>
             <h2 className="text-lg text-white font-semibold">Withdraw</h2>
-            <button onClick={() => navigate(-1)} className="text-white">
+            <button onClick={() =>navigate('/withdraw-history')} className="text-white">
               <FaHistory />
             </button>
           </div>
