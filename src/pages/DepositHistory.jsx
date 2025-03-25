@@ -6,6 +6,8 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "./Layout";
 import { FaRegEye } from "react-icons/fa";
+import { FaHistory } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const API_URL = "https://staging.syscorp.in/api/v1/jiboomba";
 
@@ -45,56 +47,16 @@ export default function ListBank() {
   return (
     <Layout>
       <div>
-        {/* <h2>Deposit History</h2>
-
-            {loading && <p>Loading...</p>}
-            {error && <p style={{ color: "red" }}>{error}</p>}
-
-            {playerName && <h3>Player Name: {playerName}</h3>}
-
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Player ID</th>
-                        <th>Amount</th>
-                        <th>UTR</th>
-                        <th>Bonus</th>
-                        <th>Image</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {depositHistoryData.length > 0 ? (
-                        depositHistoryData.map((deposit, index) => (
-                            <tr key={index}>
-                                <td>{deposit.player_id}</td>
-                                <td>{deposit.amount}</td>
-                                <td>{deposit.utr}</td>
-                                <td>{deposit.bonus || "N/A"}</td>
-                                <td>
-                                    {deposit.image ? (
-                                        <img src={`https://staging.syscorp.in/storage/${deposit.image}`} alt="Deposit" width="50" />
-                                       
-                                    ) : (
-                                        "No Image"
-                                    )}
-                                </td>
-                                <td>{deposit.status}</td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="6">No deposit history available.</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table> */}
-        {/* <div className="relative flex items-center justify-between p-4 text-white">
-          <button onClick={() => navigate(-1)}>&#8592; Back</button>
-          <h2 className="text-lg font-semibold">Deposit</h2>
-          <button onClick={() => navigate(-1)}>Close</button>
-        </div> */}
-
+        <div className="relative ">
+          <div className="flex items-center justify-between mb-4 relative ">
+            <button onClick={() => navigate(-1)}>
+              <IoMdArrowRoundBack size={18} />
+            </button>
+            <div className="flex-1 text-center">
+              <h2 className="text-lg font-semibold">Deposit</h2>
+            </div>
+          </div>
+        </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -106,10 +68,13 @@ export default function ListBank() {
                   <div className="flex items-center">Amount</div>
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  <div className  ="flex items-center">UTR</div>
+                  <div className="flex items-center">UTR</div>
                 </th>
                 <th scope="col" className="px-6 py-3">
                   <div className="flex items-center">Image</div>
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  <div className="flex items-center">Remarks</div>
                 </th>
               </tr>
             </thead>
@@ -124,7 +89,19 @@ export default function ListBank() {
                       scope="row"
                       className="px-3 py-4 whitespace-nowrap text-sm font-medium"
                     >
-                      <p className="bg-green-500 text-white text-center p-1 rounded">
+                      <p
+                        className={`text-white text-center p-1 rounded ${
+                          deposit.status === "pending"
+                            ? "bg-orange-500"
+                            : deposit.status === "processing"
+                            ? "bg-yellow-500"
+                            : deposit.status === "verified"
+                            ? "bg-green-500"
+                            : deposit.status === "rejected"
+                            ? "bg-red-500"
+                            : "bg-gray-500" // Default color if status is unknown
+                        }`}
+                      >
                         {deposit.status}
                       </p>
                     </th>
@@ -133,11 +110,7 @@ export default function ListBank() {
                     <td className="px-6 py-4">
                       {deposit.image ? (
                         <button
-                          onClick={() =>
-                            setSelectedImage(
-                              `${deposit.image}`
-                            )
-                          }
+                          onClick={() => setSelectedImage(`${deposit.image}`)}
                         >
                           <FaRegEye className="w-6 h-6 text-blue-500" />
                         </button>
@@ -145,6 +118,7 @@ export default function ListBank() {
                         "No Image"
                       )}
                     </td>
+                    <td>{deposit.remarks}</td>
                   </tr>
                 ))
               ) : (

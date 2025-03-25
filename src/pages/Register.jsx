@@ -62,15 +62,19 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     try {
       if (otpRequired) {
-        const res = await register({ mobile: formData.mobile, type, portal_slug: "jiboomba" });
+        const res = await register({ mobile: formData.mobile, player_name: formData.player_name, type, portal_slug: "jiboomba" });
+        console.log("register", res);
         if (res.status === "success") {
           setOtpSent(true);
           setStaticOTP(res.otp);
-        } else {
-          setError("This Mobile is already registered. ");
+        } else if(res.status === "error"){
+          console.log("error messages", Object.values(res.errors[0]));
+          setError(Object.values(res.errors[0]));
+        }
+        else {
+          setError("Somethink went wrong");
         }
       } else {
         const res = await register({ ...formData, portal_slug: "jiboomba", type });
