@@ -279,6 +279,7 @@ import {
   getProfile,
   authenticationType,
   authenticationOtpVerify,
+  resendOtp
 } from "../api/auth";
 import { AuthContext } from "../context/AuthContext";
 
@@ -292,6 +293,7 @@ export default function Login() {
   const [otpRequired, setOtpRequired] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [staticOPT, setstaticOPT] = useState(false);
+  const [staticOTP, setStaticOTP] = useState("");
   const [timer, setTimer] = useState(600); 
   const [resendEnabled, setResendEnabled] = useState(false);
   const navigate = useNavigate();
@@ -327,9 +329,10 @@ export default function Login() {
         console.log(res);
         if (res.status === "success") {
           setOtpSent(true);
-          // console.log('fdd',res.OTP);
           setstaticOPT(res.otp);
-          setTimer(600); 
+          const expiryTimeInSeconds = res.expiary?.time * 60 || 60;
+          setTimer(expiryTimeInSeconds);
+          // setTimer(60); 
           setResendEnabled(false);
         } else if (res.status === "error") {
           console.log("insied");
@@ -416,13 +419,16 @@ export default function Login() {
     }
   };
 
+
+  
   const handleResendOtp = async () => {
-    setErrors(""); // Use setErrors instead of setError
+    setErrors(""); 
     try {
-      const res = await login({ mobile, type });
+      const res = await resendOtp({ mobile,  type,  });
       if (res.status === "success") {
-        setstaticOPT(res.otp); // Fix function name case
-        setTimer(600);
+        setStaticOTP(res.otp);
+        const expiryTimeInSeconds = res.expiary?.time * 60 || 60;
+        setTimer(expiryTimeInSeconds);
         setResendEnabled(false);
       } else {
         setErrors("Failed to resend OTP, try again.");
@@ -431,8 +437,6 @@ export default function Login() {
       setErrors("Failed to resend OTP, try again.");
     }
   };
-  
-
   //  new code
 
   return (

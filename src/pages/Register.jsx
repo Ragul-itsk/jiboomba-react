@@ -1,7 +1,7 @@
 
 import { useState, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { register, getProfile, authenticationType, authenticationOtpVerify } from "../api/auth";
+import { register, getProfile, authenticationType, authenticationOtpVerify,resendOtp } from "../api/auth";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 
@@ -42,7 +42,7 @@ export default function Register() {
     if (formData.player_name.length >= 3) {
       const checkPlayerName = async () => {
         try {
-          const response = await axios.get(`https://staging.syscorp.in/api/v1/jiboomba/check-player-name?player_name=${formData.player_name}`);
+          const response = await axios.get(`https://staging.syscorp.in/api/v1/Starbuks/check-player-name?player_name=${formData.player_name}`);
           if (response.data.status === "success") {
             setPlayerNameStatus("Available");
           } else if(response.data.status === "failed") {
@@ -71,7 +71,8 @@ export default function Register() {
         if (res.status === "success") {
           setOtpSent(true);
           setStaticOTP(res.otp);
-          setTimer(600); 
+          const expiryTimeInSeconds = res.expiary?.time * 60 || 60;
+          setTimer(expiryTimeInSeconds);
           setResendEnabled(false);
         } else if(res.status === "error"){
           console.log("error messages", Object.values(res.errors[0]));
@@ -81,7 +82,7 @@ export default function Register() {
           setError("Somethink went wrong");
         }
       } else {
-        const res = await register({ ...formData, portal_slug: "jiboomba", type });
+        const res = await register({ ...formData, portal_slug: "Starbuks", type });
         if (!res || !res.token) throw new Error("This mobile is already exist in this Portal.");
 
         localStorage.setItem("token", res.token);
@@ -98,14 +99,14 @@ export default function Register() {
     }
   };
 
-  useEffect(() => {
-    if (otpSent && timer > 0) {
-      const countdown = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
+    useEffect(() => {
+      if (otpSent && timer > 0) {
+        const countdown = setInterval(() => {
+          setTimer((prev) => prev - 1);
+        }, 1000);
 
-      return () => clearInterval(countdown);
-    }
+        return () => clearInterval(countdown);
+      }
 
     if (timer === 0) {
       setResendEnabled(true);
@@ -137,12 +138,13 @@ export default function Register() {
   };
 
   const handleResendOtp = async () => {
-    setError("");
+    setError(""); 
     try {
-      const res = await register({ mobile: formData.mobile, player_name: formData.player_name, type, portal_slug: "jiboomba" });
+      const res = await resendOtp({ mobile: formData.mobile,  type,  });
       if (res.status === "success") {
         setStaticOTP(res.otp);
-        setTimer(600); // Restart 10-minute timer
+        const expiryTimeInSeconds = res.expiary?.time * 60 || 60;
+          setTimer(expiryTimeInSeconds);
         setResendEnabled(false);
       } else {
         setError("Failed to resend OTP, try again.");

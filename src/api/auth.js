@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/v1/jiboomba"; 
+const API_URL = "https://staging.syscorp.in/api/v1/starbuks"; 
 
 export const register = async (data) => {
   console.log(data)
@@ -100,6 +100,18 @@ export const verifyToken = async (token) => {
     try {
       const response = await axios.post(`${API_URL}/authentication-otp-verify`,data);
       console.log('rretrt',response.data) 
+      return response.data;
+      
+    } catch (error) {
+      throw error.response.data;
+    }
+  };
+
+  export const resendOtp = async (data) => {
+
+    try {
+      const response = await axios.post(`${API_URL}/resend-otp`,data);
+      console.log('resend',response.data) 
       return response.data;
       
     } catch (error) {

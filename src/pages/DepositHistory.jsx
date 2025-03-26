@@ -8,7 +8,7 @@ import Layout from "./Layout";
 import { FaRegEye } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-const API_URL = "https://staging.syscorp.in/api/v1/jiboomba";
+const API_URL = "https://staging.syscorp.in/api/v1/Starbuks";
 
 export default function ListBank() {
   const { token } = useContext(AuthContext);

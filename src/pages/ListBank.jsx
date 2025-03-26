@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import Layout from "./Layout";
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/v1/jiboomba"; // Replace with actual API URL
+const API_URL = "https://staging.syscorp.in/api/v1/Starbuks"; // Replace with actual API URL
 
 export default function ListBank() {
     const { token } = useContext(AuthContext);

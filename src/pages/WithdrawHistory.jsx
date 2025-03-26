@@ -9,7 +9,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdCancel } from "react-icons/md";
 
 
-const API_URL = "https://staging.syscorp.in/api/v1/jiboomba";
+const API_URL = "https://staging.syscorp.in/api/v1/Starbuks";
 
 export default function WithdrawList() {
   const { token } = useContext(AuthContext);

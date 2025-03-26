@@ -3,7 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { withdrawHistory } from "../api/withdraw";
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/v1/jiboomba";
+const API_URL = "https://staging.syscorp.in/api/v1/Starbuks";
 
 export default function WithdrawList() {
     const { token } = useContext(AuthContext);
