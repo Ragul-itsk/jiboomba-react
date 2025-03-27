@@ -42,7 +42,7 @@ export default function Register() {
     if (formData.player_name.length >= 3) {
       const checkPlayerName = async () => {
         try {
-          const response = await axios.get(`https://staging.syscorp.in/api/v1/Starbuks/check-player-name?player_name=${formData.player_name}`);
+          const response = await axios.get(`https://staging.syscorp.in/api/v1/starbuks/check-player-name?player_name=${formData.player_name}`);
           if (response.data.status === "success") {
             setPlayerNameStatus("Available");
           } else if(response.data.status === "failed") {
@@ -82,7 +82,7 @@ export default function Register() {
           setError("Somethink went wrong");
         }
       } else {
-        const res = await register({ ...formData, portal_slug: "Starbuks", type });
+        const res = await register({ ...formData, portal_slug: "starbuks", type });
         if (!res || !res.token) throw new Error("This mobile is already exist in this Portal.");
 
         localStorage.setItem("token", res.token);

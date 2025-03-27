@@ -60,10 +60,10 @@ export default function Dashboard() {
 
   const launchGame = async (provider, name, uuid) => {
     try {
-      // const currentUrl = window.location.href;  
-      const currentUrl ="https://Starbuks.in/games";  
+      const currentUrl = window.location.href;  
+      // const currentUrl ="https://Starbuks.in/games";  
       const response = await fetch(
-        `https://staging.syscorp.in/api/v1/Starbuks/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(currentUrl)}`,
+        `https://staging.syscorp.in/api/v1/starbuks/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(currentUrl)}`,
         {
           method: "GET",
           headers: {

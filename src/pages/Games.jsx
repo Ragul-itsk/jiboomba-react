@@ -20,7 +20,7 @@ export default function Games() {
   const fetchProviders = async () => {
     try {
       const response = await fetch(
-        "https://staging.syscorp.in/api/v1/Starbuks/providers-list"
+        "https://staging.syscorp.in/api/v1/starbuks/providers-list"
       );
       const data = await response.json();
 
@@ -38,8 +38,8 @@ export default function Games() {
     try {
       const url =
         query.length >= 3
-          ? `https://staging.syscorp.in/api/v1/Starbuks/all-games?search=${query}&page=${pageNumber}&limit=50`
-          : `https://staging.syscorp.in/api/v1/Starbuks/all-games?page=${pageNumber}&limit=50`;
+          ? `https://staging.syscorp.in/api/v1/starbuks/all-games?search=${query}&page=${pageNumber}&limit=50`
+          : `https://staging.syscorp.in/api/v1/starbuks/all-games?page=${pageNumber}&limit=50`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -103,10 +103,10 @@ export default function Games() {
   // Launch Game (Open in iFrame)
   const launchGame = async (provider, name, uuid) => {
     try {
-      // const currentUrl = window.location.href;  
-      const currentUrl ="https://Starbuks.in/games";  
+      const currentUrl = window.location.href;  
+      // const currentUrl ="https://Starbuks.in/games";  
       const response = await fetch(
-        `https://staging.syscorp.in/api/v1/Starbuks/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(currentUrl)}`,
+        `https://staging.syscorp.in/api/v1/starbuks/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(currentUrl)}`,
         {
           method: "GET",
           headers: {

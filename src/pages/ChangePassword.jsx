@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/v1/Starbuks";
+const API_URL = "https://staging.syscorp.in/api/v1/starbuks";
 
 const ChangePasswordRequest = () => {
   const [mobile, setMobile] = useState("");
