@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { newPasswordCreate } from "../api/auth";
+import { changePassword } from "../api/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -57,7 +57,7 @@ const ChangePasswordRequest = () => {
   }, [token]);
 
   // Function to reset password
-  const handleResetPassword = async (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault();
 
     if (!oldPassword || !newPassword || !confirmPassword) {
@@ -71,17 +71,17 @@ const ChangePasswordRequest = () => {
     }
 
     try {
-      const response = await newPasswordCreate({
+      const response = await changePassword(token, {
         mobile,
         old_password: oldPassword,
         password: newPassword,
-        password_confirmation: confirmPassword,   
+        password_confirmation: confirmPassword,
       });
 
       console.log("Password Change Response:", response);
       navigate("/login");
     } catch (error) {
-      setError(error.message || "Failed to reset password.");
+      setError(error.msg || "Failed to reset password.");
     }
   };
 
@@ -94,7 +94,7 @@ const ChangePasswordRequest = () => {
           Change Password
         </h2>
 
-        <form onSubmit={handleResetPassword} className="space-y-4">
+        <form onSubmit={handleChangePassword} className="space-y-4">
           <input
             type="hidden"
             placeholder="Enter Mobile Number"
