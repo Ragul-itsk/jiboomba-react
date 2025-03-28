@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { getBank } from "../api/player_bank";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import axios from "axios";
 
@@ -11,6 +12,11 @@ export default function ListBank() {
     const [bankDetails, setBankDetails] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    const handleEdit = (bankId) => {
+      navigate(`/edit-bank/${bankId}`);
+    };
 
     useEffect(() => {
         fetchBankDetails();
@@ -75,53 +81,7 @@ export default function ListBank() {
     };
 
         return (
-            // <Layout>
-            // <div>
-            //     <h2>Bank Details</h2>
-            //     {loading ? (
-            //         <p>Loading...</p>
-            //     ) : error ? (
-            //         <p style={{ color: "red" }}>{error}</p>
-            //     ) : bankDetails.length > 0 ? (
-            //         <table border="1">
-            //             <thead>
-            //                 <tr>
-            //                     <th>ID</th>
-            //                     <th>Bank Name</th>
-            //                     <th>Account Holder</th>
-            //                     <th>Account Number</th>
-            //                     <th>IFSC Code</th>
-            //                     <th>UPI ID</th>
-            //                     <th>Action</th>
-            //                 </tr>
-            //             </thead>
-            //             <tbody>
-            //                 {bankDetails.map((bank, index) => (
-            //                     <tr key={index}>
-            //                         <td>{bank.id}</td>
-            //                         <td>{bank.bank_name}</td>
-            //                         <td>{bank.account_holder_name}</td>
-            //                         <td>{bank.account_number}</td>
-            //                         <td>{bank.ifsc_code}</td>
-            //                         <td>{bank.upi_id || "N/A"}</td>
-            //                         <td>
-            //                             <button onClick={() => changeBankStatus(bank.id, bank.status)}>
-            //                                 {bank.status === "1" ? "Deactivate" : "Activate"}
-            //                             </button>
-            //                             &nbsp;
-            //                             <button onClick={() => deleteBank(bank.id)} style={{ color: "red" }}>
-            //                                 Delete
-            //                             </button>
-            //                         </td>
-            //                     </tr>
-            //                 ))}
-            //             </tbody>
-            //         </table>
-            //     ) : (
-            //         <p>No bank details available.</p>
-            //     )}
-            // </div>
-            // </Layout>
+           
             <Layout>
   <div className="flex justify-center items-start min-h-screen bg-gray-100 p-6">
     <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl">
@@ -164,6 +124,14 @@ export default function ListBank() {
                       {bank.status === "1" ? "Deactivate" : "Activate"}
                     </button>
                     &nbsp;
+                    <button
+  onClick={() => handleEdit(bank.id)}
+  className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+>
+  Edit
+</button>
+
+  &nbsp;
                     <button
                       onClick={() => deleteBank(bank.id)}
                       className="ml-2 px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700"

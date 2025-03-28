@@ -79,11 +79,11 @@ const Layout = ({ children }) => {
                 alt="Profile Image"
               />
               <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-                {user.player.playername}
+                {user.playername}
               </h5>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 {/* {user.player.chips} */}
-                <p className="text-gray-600">Chips: {user.player.chips}</p>
+                <p className="text-gray-600">Chips: {user.chips}</p>
               </span>
               <div className="flex mt-4 md:mt-6">
                 <Link to="/deposit-amount">

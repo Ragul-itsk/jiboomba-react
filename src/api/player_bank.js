@@ -51,4 +51,16 @@
             }
         };
 
+
+        export const editBank = async (token, bankId) => {
+            try {
+                const response = await axios.get(`${API_URL}/player/edit-bank/${bankId}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                return response.data;
+            } catch (error) {
+                console.error("Error fetching bank details:", error);
+                return null;
+            }
+        };
         

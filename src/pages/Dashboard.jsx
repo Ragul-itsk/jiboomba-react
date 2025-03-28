@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import { a, style } from "framer-motion/client";
+import { verifyToken } from "../api/auth";
 
 
 const bannerImages = [
@@ -25,27 +26,45 @@ const bannerImages = [
 
   
 export default function Dashboard() {
-  const { user, token } = useContext(AuthContext);
+  const { user, token ,setUser} = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
-      if (!user) {
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate loading
+      if (!token) {
+        return <Navigate to="/login" />;
       }
-      setLoading(false);
+
+      try {
+        const response = await verifyToken(token);
+
+        if (response?.data?.type === "valid") {
+          setUser(response.data.user);
+          setLoading(false);
+        } else {
+          localStorage.removeItem("token");
+          navigate("/login", {
+            state: { message: "Session expired. Please login again." },
+          });
+        }
+      } catch (error) {
+        localStorage.removeItem("token");
+        navigate("/login", {
+          state: { message: "Session expired. Please login again." },
+        });
+      }
     };
+
     checkAuth();
-  }, [user]);
+  }, [token, navigate, setUser]);
 
   if (loading) {
     return <p className="text-center text-gray-500 mt-10">Loading...</p>;
   }
 
   if (!user) {
-    navigate("/login");
-    return null;
+    return <Navigate to="/login" />;
   }
 
   const sliderSettings = {
@@ -94,10 +113,10 @@ export default function Dashboard() {
         {/* Top Navbar & Profile Info Fixed */}
         <div className="fixed top-0 left-0 w-full bg-white shadow-md mt-14 z-20">
           <div className="bg-white shadow-md p-4 text-center relative">
-            <h2 className="text-xl font-bold">Welcome, {user.player.playername}!</h2>
+            <h2 className="text-xl font-bold">Welcome, {user.playername}!</h2>
             <div className="flex justify-center">
               <p className="text-gray-600 flex items-center gap-2">
-                Chips: {user.player.chips}
+                Chips: {user.chips}
                 <button
                   className="text-green-500"
                   onClick={() => navigate("/deposit-amount")}

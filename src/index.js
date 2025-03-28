@@ -16,6 +16,7 @@ import PlayerBank from "./pages/PlayerBank";
 import SendWithdrawRequestForm from "./pages/SendWithdrawRequest";
 import StoreBankForm from "./pages/StoreBank";
 import ListBank from "./pages/ListBank";
+import EditBank from "./pages/EditBank";
 import DepositHistory from "./pages/DepositHistory";
 import Statement from "./pages/Statement";
 import WithdrawHistory from "./pages/WithdrawHistory";
@@ -28,7 +29,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import "./index.css";
 import Layout from "./pages/Layout";
-
+const token = localStorage.getItem("Token");
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -50,6 +51,7 @@ root.render(
           <Route path="/deposit-method" element={<DepositMethod />} />
           <Route path="/store-bank" element={<StoreBankForm />} />
           <Route path="/list-bank" element={<ListBank />} />
+          <Route path="/edit-bank/:id" element={<EditBank token={token} />} />
           <Route path="/withdraw-amount" element={<WithdrawAmount />} />
           <Route path="/player-bank" element={<PlayerBank />} />
           <Route path="/withdraw-request" element={<SendWithdrawRequestForm />} />
