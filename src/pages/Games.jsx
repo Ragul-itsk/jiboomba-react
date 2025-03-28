@@ -103,7 +103,7 @@ export default function Games() {
   // Launch Game (Open in iFrame)
   const launchGame = async (provider, name, uuid) => {
     try {
-      const currentUrl = window.location.href;  
+      const currentUrl = window.location.href;   
       // const currentUrl ="https://Starbuks.in/games";  
       const response = await fetch(
         `https://staging.syscorp.in/api/v1/starbuks/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(currentUrl)}`,
