@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import axios from "axios";
 
-const API_URL = "https://staging.syscorp.in/api/v1/starbuks"; // Replace with actual API URL
+const API_URL = "https://staging.syscorp.in/api/v1/starbuks"; 
 
 export default function ListBank() {
     const { token } = useContext(AuthContext);
@@ -64,7 +64,7 @@ export default function ListBank() {
     const deleteBank = async (bankId) => {
         try {
             const response = await axios.get(
-                `${API_URL}/player/delete-bank?bank_id=${bankId}&is_deleted=1`,
+                `${API_URL}/player/delete-bank?bank_id=${bankId}&is_deleted=0`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
