@@ -1,0 +1,1 @@
+export const BASE_URL = "https://staging.syscorp.in/api/v1/jiboomba";

@@ -22,6 +22,7 @@ import Statement from "./pages/Statement";
 import WithdrawHistory from "./pages/WithdrawHistory";
 import Providers from "./pages/Providers";
 import Games from "./pages/Games";
+import TurboGames from "./pages/TurboGames";
 import TempGame from "./pages/TempGame";
 import GamePage from "./pages/GamePage";
 import { AuthProvider } from "./context/AuthContext";
@@ -65,6 +66,7 @@ root.render(
 
         <Route path="/providers" element={<Providers />} />
         <Route path="/games" element={<Games />} />
+        <Route path="/turbo-games" element={<TurboGames />} />
         <Route path="/temp-game" element={<TempGame />} />
         <Route path="/games/:gameName" element={<GamePage />} />
       </Routes>

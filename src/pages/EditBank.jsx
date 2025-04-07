@@ -2,8 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-
-const API_URL = "https://staging.syscorp.in/api/v1/starbuks";
+import { BASE_URL } from "../config/apiConfig";
 
 const EditBank = () => {
   const { id } = useParams();
@@ -23,7 +22,7 @@ const EditBank = () => {
       if (!id || !token) return; // Prevent unnecessary API calls
 
       try {
-        const response = await axios.get(`${API_URL}/player/edit-bank/${id}`, {
+        const response = await axios.get(`${BASE_URL}/player/edit-bank/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -32,14 +31,18 @@ const EditBank = () => {
         if (response.data && response.data.playerBank) {
           setBank({
             bank_name: response.data.playerBank.bank_name || "",
-            account_holder_name: response.data.playerBank.account_holder_name || "",
+            account_holder_name:
+              response.data.playerBank.account_holder_name || "",
             account_number: response.data.playerBank.account_number || "",
             ifsc_code: response.data.playerBank.ifsc_code || "",
             upi_id: response.data.playerBank.upi_id || "",
           });
         }
       } catch (error) {
-        console.error("Error fetching bank details:", error.response?.data || error.message);
+        console.error(
+          "Error fetching bank details:",
+          error.response?.data || error.message
+        );
       }
     };
 
@@ -55,16 +58,19 @@ const EditBank = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      await axios.post(`${API_URL}/player/update-bank/${id}`, bank, {
+      await axios.post(`${BASE_URL}/player/update-bank/${id}`, bank, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       alert("Bank details updated successfully!");
       navigate("/list-bank");
     } catch (error) {
-      console.error("Error updating bank details:", error.response?.data || error.message);
+      console.error(
+        "Error updating bank details:",
+        error.response?.data || error.message
+      );
       alert("Failed to update bank details. Please try again.");
     }
   };
@@ -102,6 +108,6 @@ const EditBank = () => {
       </form>
     </div>
   );
-};  
+};
 
 export default EditBank;

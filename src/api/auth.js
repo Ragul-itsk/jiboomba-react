@@ -1,11 +1,10 @@
 import axios from "axios";
-
-const API_URL = "https://staging.syscorp.in/api/v1/starbuks"; 
+import { BASE_URL } from "../config/apiConfig";
 
 export const register = async (data) => {
   console.log(data)
   try {
-    const response = await axios.post(`${API_URL}/register`,data);
+    const response = await axios.post(`${BASE_URL}/register`,data);
     return response.data;
   } catch (error) {
     return error.response.data;
@@ -15,7 +14,7 @@ export const register = async (data) => {
 export const login = async (data) => {
 
   try {
-    const response = await axios.post(`${API_URL}/login`,data);
+    const response = await axios.post(`${BASE_URL}/login`,data);
     // console.log(response.data)  
     return response.data;
     
@@ -28,7 +27,7 @@ export const login = async (data) => {
 
 export const getProfile = async (token) => {
   try {
-    const response = await axios.get(`${API_URL}/player/profile`, {
+    const response = await axios.get(`${BASE_URL}/player/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     
@@ -47,7 +46,7 @@ export const logout = async (token) => {
   // console.log(' logouttoken',token)
   try {
     const response = await axios.post(
-      `${API_URL}/player/logout`,
+      `${BASE_URL}/player/logout`,
       {},
       {
         headers: {
@@ -68,7 +67,7 @@ export const verifyToken = async (token) => {
   try {
     console.log('inside verify try');
 
-    const response = await axios.get(`${API_URL}/player/verify-token`, {
+    const response = await axios.get(`${BASE_URL}/player/verify-token`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     
@@ -84,7 +83,7 @@ export const verifyToken = async (token) => {
     try {
 
 
-      const response = await axios.get(`${API_URL}/authentication-type`, { params: data });
+      const response = await axios.get(`${BASE_URL}/authentication-type`, { params: data });
 
       console.log("API Response:", response);
       return response.data;
@@ -98,7 +97,7 @@ export const verifyToken = async (token) => {
   export const authenticationOtpVerify = async (data) => {
 
     try {
-      const response = await axios.post(`${API_URL}/authentication-otp-verify`,data);
+      const response = await axios.post(`${BASE_URL}/authentication-otp-verify`,data);
       console.log('rretrt',response.data) 
       return response.data;
       
@@ -110,7 +109,7 @@ export const verifyToken = async (token) => {
   export const resendOtp = async (data) => {
 
     try {
-      const response = await axios.post(`${API_URL}/resend-otp`,data);
+      const response = await axios.post(`${BASE_URL}/resend-otp`,data);
       console.log('resend',response.data) 
       return response.data;
       
@@ -124,7 +123,7 @@ export const verifyToken = async (token) => {
 export const  forgotPasswordOtpGenerate = async (data) => {
 
   try {
-    const response = await axios.post(`${API_URL}/forgot-password-otp-generate`,data);
+    const response = await axios.post(`${BASE_URL}/forgot-password-otp-generate`,data);
     // console.log('rretrt',response.data) 
     return response.data;
     
@@ -136,7 +135,7 @@ export const  forgotPasswordOtpGenerate = async (data) => {
   export const  forgotPasswordOtpVerify = async (data) => {
 
     try {
-      const response = await axios.post(`${API_URL}/forgot-password-otp-verify`,data);
+      const response = await axios.post(`${BASE_URL}/forgot-password-otp-verify`,data);
       // console.log('rretrt',response.data) 
       return response.data;
       
@@ -150,7 +149,7 @@ export const  forgotPasswordOtpGenerate = async (data) => {
   export const  newPasswordCreate = async (data) => {
 
     try {
-      const response = await axios.post(`${API_URL}/new-password-create`,data);
+      const response = await axios.post(`${BASE_URL}/new-password-create`,data);
       console.log('rretrt',response.data) 
       return response.data;
       
@@ -163,7 +162,7 @@ export const  forgotPasswordOtpGenerate = async (data) => {
 
     try {
       const response = await axios.post(
-        `${API_URL}/player/change-password`,
+        `${BASE_URL}/player/change-password`,
         data,
         {
           headers: {

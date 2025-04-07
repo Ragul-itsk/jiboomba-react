@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config/apiConfig";
 
-export default function Games() {
+export default function TurboGames() {
   const { token } = useContext(AuthContext);
   const [games, setGames] = useState([]); // Stores games from API
   const [displayedGames, setDisplayedGames] = useState([]); // Games to display
@@ -18,62 +18,36 @@ export default function Games() {
   const chunkSize = 20; // Load 20 games at a time
   const navigate = useNavigate();
 
-  const fetchProviders = async () => {
+  const fetchTurboGames = async () => {
     try {
       const response = await fetch(
-        `${BASE_URL}/providers-list`
+        `${BASE_URL}/turbo-games`
       );
       const data = await response.json();
 
       if (data.status === "success") {
-        setProviders(data.providers);
-        setTypes(data.types);
+        setGames(data.turboGames || []);
+        setDisplayedGames(data.turboGames.slice(0, chunkSize) || []);
+        setHasMore(data.turboGames.length > 0);
       }
     } catch (error) {
       console.error("Error fetching providers and types:", error);
     }
   };
 
-  // Fetch Games (Pagination & Search)
-  const fetchGames = async (query = "", pageNumber = 1) => {
-    try {
-      const url =
-        query.length >= 3
-          ? `${BASE_URL}/all-games?search=${query}&page=${pageNumber}&limit=50`
-          : `${BASE_URL}/all-games?page=${pageNumber}&limit=50`;
-
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.status === "success") {
-        const newGames = data.allGames || [];
-        setGames(pageNumber === 1 ? newGames : [...games, ...newGames]);
-        setDisplayedGames(
-          pageNumber === 1
-            ? newGames.slice(0, chunkSize)
-            : [...displayedGames, ...newGames.slice(0, chunkSize)]
-        );
-        setHasMore(newGames.length > 0);
-      }
-    } catch (error) {
-      console.error("Error fetching games:", error);
-    }
-  };
-
   useEffect(() => {
-    fetchProviders();
-    fetchGames();
+    fetchTurboGames();
   }, []);
 
   useEffect(() => {
     if (token) {
-      fetchGames();
+      fetchTurboGames();
     }
   }, [token]);
 
   // Fetch initial games
   useEffect(() => {
-    fetchGames();
+    fetchTurboGames();
   }, []);
 
   // Handle Infinite Scroll
@@ -95,21 +69,22 @@ export default function Games() {
 
     const timeoutId = setTimeout(() => {
       setPage(1);
-      fetchGames(search, 1);
+      fetchTurboGames(search, 1);
     }, 500); // Delay API request by 500ms
 
     return () => clearTimeout(timeoutId);
   }, [search]);
 
   // Launch Game (Open in iFrame)
-  const launchGame = async (provider, name, uuid) => {
+  const launchGame = async (name) => {
     try {
+      console.log("Launching game:", name);
       const currentUrl = window.location.href;
+      console.log("Current URL:", currentUrl);
+      // return;
       // const currentUrl ="https://Starbuks.in/games";
       const response = await fetch(
-        `${BASE_URL}/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(
-          currentUrl
-        )}`,
+        `${BASE_URL}/player/turbo/${name}`,
         {
           method: "GET",
           headers: {
@@ -122,10 +97,11 @@ export default function Games() {
         }
       );
       const data = await response.json();
-      console.log(data);
+      console.log("Game launch response:", data);
+      console.log("Game response:", data.gameUrl);
 
-      if (data.status === "success" && data.game?.gameUrl) {
-        navigate(`/games/${name}`, { state: { gameUrl: data.game.gameUrl } });
+      if (data.status === "success" && data.gameUrl) {
+        navigate(`/games/${data.gameName}`, { state: { gameUrl: data.gameUrl } });
       } else {
         console.error("Invalid game data:", data);
       }
@@ -171,6 +147,7 @@ export default function Games() {
         {/* Games List - Infinite Scroll */}
         <div className="pt-24 pb-10 p-2">
           <h3 className="text-lg font-semibold mb-4">All Games</h3>
+
           <InfiniteScroll
             dataLength={displayedGames.length}
             next={fetchMoreGames}
@@ -182,17 +159,15 @@ export default function Games() {
                 <div
                   key={`${game.uuid}-${index}`} // Ensure unique key
                   className="bg-white p-3 rounded-lg shadow-md text-center cursor-pointer"
-                  onClick={() =>
-                    launchGame(game.provider, game.name, game.uuid)
-                  }
+                  onClick={() => launchGame(game.value)}
                 >
                   <img
-                    src={game.image}
+                    src={game.imagePath}
                     alt={game.name}
                     className="w-full h-32 object-cover rounded-md mb-2"
                   />
-                  <p className="font-semibold">{game.name}</p>
-                  <p className="text-sm text-gray-500">{game.type}</p>
+                  <p className="font-semibold">{game.key}</p>
+                  <p className="text-sm text-gray-500">{game.value}</p>
                 </div>
               ))}
             </div>

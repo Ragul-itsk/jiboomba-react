@@ -3,8 +3,7 @@ import { changePassword } from "../api/auth";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-const API_URL = "https://staging.syscorp.in/api/v1/starbuks";
+import { BASE_URL } from "../config/apiConfig";
 
 const ChangePasswordRequest = () => {
   const [mobile, setMobile] = useState("");
@@ -13,14 +12,14 @@ const ChangePasswordRequest = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { token } = useContext(AuthContext);  
+  const { token } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   // Function to verify token and get user details
   const verifyToken = async (userToken) => {
     try {
-      const response = await axios.get(`${API_URL}/player/verify-token`, {
+      const response = await axios.get(`${BASE_URL}/player/verify-token`, {
         headers: { Authorization: `Bearer ${userToken}` },
       });
 

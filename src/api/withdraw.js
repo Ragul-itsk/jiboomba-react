@@ -1,10 +1,10 @@
 import axios from "axios";
+import { BASE_URL } from "../config/apiConfig";
 
-const API_URL = "https://staging.syscorp.in/api/v1/starbuks"; 
 export const sendWithdrawRequest = async (data, token) => {
   try {
     const response = await axios.post(
-      `${API_URL}/player/send-withdraw-request`,
+      `${BASE_URL}/player/send-withdraw-request`,
       data,
       {
         headers: {
@@ -21,7 +21,7 @@ export const sendWithdrawRequest = async (data, token) => {
 
 export const getBank = async (token) => {
     try {
-      const response = await axios.get(`${API_URL}/player/get-bank`, {
+      const response = await axios.get(`${BASE_URL}/player/get-bank`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -36,7 +36,7 @@ export const getBank = async (token) => {
   
   export const withdrawHistory = async (token) => {
     try {
-        const response = await axios.get(`${API_URL}/player/withdraw-history`, {
+        const response = await axios.get(`${BASE_URL}/player/withdraw-history`, {
         headers: { Authorization: `Bearer ${token}` },
         });
         return response.data;

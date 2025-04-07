@@ -164,7 +164,12 @@ const Layout = ({ children }) => {
         >
           Home
         </button>
-        <button className="text-gray-600">Live Games</button>
+        <button
+            className="text-gray-600"
+            onClick={() => navigate("/turbo-games")}
+          >
+            Turbo Games
+          </button>
         <button className="text-gray-600">Casino</button>
       </nav>
     </div>

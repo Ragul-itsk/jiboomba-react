@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect} from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import { FiPlusCircle } from "react-icons/fi";
@@ -9,24 +9,51 @@ import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import { a, style } from "framer-motion/client";
 import { verifyToken } from "../api/auth";
-
+import { BASE_URL } from "../config/apiConfig";
 
 const bannerImages = [
   "assets/images/banners/aviator-banner.png",
   "assets/images/banners/gamzix-banner.jpg",
   "assets/images/banners/drops_wins-banner.jpg",
 ];
-  
-  const games = [
-    { id: 1, provider:"SuperSpadeGames",uuid:"fefb56935028b6efed8dc7fca86004550905a00a", name: "Teenpatti", image: "https://stage.gis-static.com/games/SuperSpadeGames/fefb56935028b6efed8dc7fca86004550905a00a.png", },
-    { id: 2, provider:"TaDaGaming",uuid:"7f3e848cd71549628d2b848dcc5fdee4", name: "Color Prediction", image: "https://stage.gis-static.com/games/TaDaGaming/7f3e848cd71549628d2b848dcc5fdee4.png",},
-    { id: 3, provider:"OneTouch",uuid:"404efaa68d461e4f9bf1f41eb5124e8cb819128f", name: "Dragon Tiger", image: "https://stage.gis-static.com/games/Rich88/f7468c20b5194dd4856c7564eb7e9bd3.png",},
-    { id: 4, provider:"instant win",uuid:"cd3380ed05f94f1da361bc705b4881dd", name: "Aviator", image: "https://stage.gis-static.com/games/3962be5e18b1e84fdd95613e87dfda1a/Spribe/841d0a6789c74dd4abab65133287af9b.png",},
-  ];
 
-  
+const games = [
+  {
+    id: 1,
+    provider: "SuperSpadeGames",
+    uuid: "fefb56935028b6efed8dc7fca86004550905a00a",
+    name: "Teenpatti",
+    image:
+      "https://stage.gis-static.com/games/SuperSpadeGames/fefb56935028b6efed8dc7fca86004550905a00a.png",
+  },
+  {
+    id: 2,
+    provider: "TaDaGaming",
+    uuid: "7f3e848cd71549628d2b848dcc5fdee4",
+    name: "Color Prediction",
+    image:
+      "https://stage.gis-static.com/games/TaDaGaming/7f3e848cd71549628d2b848dcc5fdee4.png",
+  },
+  {
+    id: 3,
+    provider: "OneTouch",
+    uuid: "404efaa68d461e4f9bf1f41eb5124e8cb819128f",
+    name: "Dragon Tiger",
+    image:
+      "https://stage.gis-static.com/games/Rich88/f7468c20b5194dd4856c7564eb7e9bd3.png",
+  },
+  {
+    id: 4,
+    provider: "instant win",
+    uuid: "cd3380ed05f94f1da361bc705b4881dd",
+    name: "Aviator",
+    image:
+      "https://stage.gis-static.com/games/3962be5e18b1e84fdd95613e87dfda1a/Spribe/841d0a6789c74dd4abab65133287af9b.png",
+  },
+];
+
 export default function Dashboard() {
-  const { user, token ,setUser} = useContext(AuthContext);
+  const { user, token, setUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -79,19 +106,21 @@ export default function Dashboard() {
 
   const launchGame = async (provider, name, uuid) => {
     try {
-      const currentUrl = window.location.href;  
-      // const currentUrl ="https://Starbuks.in/games";  
+      const currentUrl = window.location.href;
+      // const currentUrl ="https://Starbuks.in/games";
       const response = await fetch(
-        `https://staging.syscorp.in/api/v1/starbuks/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(currentUrl)}`,
+        `${BASE_URL}/player/${provider}/launch/${name}/${uuid}?return_url=${encodeURIComponent(
+          currentUrl
+        )}`,
         {
           method: "GET",
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
-          data:{
-            return_url:currentUrl 
-          }
+          data: {
+            return_url: currentUrl,
+          },
         }
       );
       const data = await response.json();
@@ -145,35 +174,43 @@ export default function Dashboard() {
 
           {/* Games Section */}
           <Link to="/games">
-          <h3 className="text-lg font-semibold mb-4">Popular Games <span className="float-right text-base font-normal p-1">All Games</span></h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Popular Games{" "}
+              <span className="float-right text-base font-normal p-1">
+                All Games
+              </span>
+            </h3>
           </Link>
           <div className="grid grid-cols-2 gap-4">
-  {games.map((game) => (
-    <a 
-      key={game.id} 
-      href={game.link} 
-      target="_blank" 
-      rel="noopener noreferrer"
-      className="bg-white p-3 rounded-lg shadow-md block"
-      onClick={() =>
-        launchGame(game.provider, game.name, game.uuid)
-      }
-    >
-      <img
-        src={game.image}
-        alt={game.name}
-        className="w-full h-32 object-cover rounded-md"
-      />
-      <p className="text-center font-semibold mt-2">{game.name}</p>
-    </a>
-  ))}
-</div>
+            {games.map((game) => (
+              <a
+                key={game.id}
+                href={game.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white p-3 rounded-lg shadow-md block"
+                onClick={() => launchGame(game.provider, game.name, game.uuid)}
+              >
+                <img
+                  src={game.image}
+                  alt={game.name}
+                  className="w-full h-32 object-cover rounded-md"
+                />
+                <p className="text-center font-semibold mt-2">{game.name}</p>
+              </a>
+            ))}
+          </div>
         </div>
 
         {/* Bottom Navigation Fixed */}
         <nav className="fixed bottom-0 left-0 w-full bg-white shadow-md p-3 flex justify-around z-10">
           <button className="text-blue-600 font-semibold">Home</button>
-          <button className="text-gray-600">Live Games</button>
+          <button
+            className="text-gray-600"
+            onClick={() => navigate("/turbo-games")}
+          >
+            Turbo Games
+          </button>
           <button className="text-gray-600">Casino</button>
         </nav>
       </div>

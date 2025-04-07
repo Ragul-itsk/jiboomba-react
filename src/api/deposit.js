@@ -1,10 +1,10 @@
   import axios from "axios";
+  import { BASE_URL } from "../config/apiConfig";
 
-  const API_URL = "https://staging.syscorp.in/api/v1/starbuks"; 
   export const sendDepositRequest = async (data, token) => {
     try {
       const response = await axios.post(
-        `${API_URL}/player/send-deposit-request`,
+        `${BASE_URL}/player/send-deposit-request`,
         data,
         {
           headers: {
@@ -21,7 +21,7 @@
   
   export const getDepositMethod = async (token) => {
       try {
-        const response = await axios.get(`${API_URL}/player/payment-methods`, {
+        const response = await axios.get(`${BASE_URL}/player/payment-methods`, {
           headers: { Authorization: `Bearer ${token}` }, 
         });
       //   console.log("Deposit Methods Response:", response.data); 
@@ -34,7 +34,7 @@
 
     export const getPaymenttDetail = async (token, payment_method_id) => {
       try {
-        const response = await axios.get(`${API_URL}/player/get-payment-detail?payment_method_id=${payment_method_id}`, {
+        const response = await axios.get(`${BASE_URL}/player/get-payment-detail?payment_method_id=${payment_method_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         return response.data;
@@ -46,7 +46,7 @@
 
     export const depositHistory = async (token) => {
       try {
-          const response = await axios.get(`${API_URL}/player/deposit-history`, {
+          const response = await axios.get(`${BASE_URL}/player/deposit-history`, {
           headers: { Authorization: `Bearer ${token}` },
           });
           return response.data;
